@@ -343,6 +343,20 @@
       var(--planet-white)
     );
   }
+  #wege.paths-scroll .fit__index {
+    color: color-mix(
+      in srgb,
+      var(--planet-primary) calc((1 - var(--text-invert, 0)) * 100%),
+      var(--planet-white)
+    );
+  }
+  #wege.paths-scroll .fit__rule {
+    background: color-mix(
+      in srgb,
+      var(--planet-primary) calc((1 - var(--text-invert, 0)) * 100%),
+      var(--planet-white)
+    );
+  }
   /* #hebel — gleiches Blau-Band-Muster wie #varianten auf der Nachfolge-Seite */
   #hebel {
     background: transparent;
@@ -360,6 +374,16 @@
       var(--planet-white)
     );
   }
+  #hebel .pillar-orbit__caption text {
+    fill: color-mix(
+      in srgb,
+      var(--planet-primary) calc((1 - var(--text-invert, 0)) * 100%),
+      var(--planet-white)
+    );
+  }
+  #hebel .pillar-orbit__caption text.en { display: none; }
+  body.lang-en #hebel .pillar-orbit__caption text.de { display: none; }
+  body.lang-en #hebel .pillar-orbit__caption text.en { display: block; }
   /* #stats — im Blau-Band von #zahlen */
   #stats {
     background: transparent;
@@ -385,40 +409,16 @@
   .paths__way.flow > * + * { --flow-space: var(--space-3); }
   .paths__head {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: var(--space-3);
     min-width: 0;
   }
-  .paths__index {
-    flex: none;
-    font-family: var(--planet-font);
-    font-size: clamp(11px, 1vw, 13px);
-    font-weight: var(--weight-body);
-    font-variant-numeric: tabular-nums;
-    letter-spacing: 0.04em;
-    line-height: 1;
-    color: color-mix(
-      in srgb,
-      var(--planet-primary) calc((1 - var(--text-invert, 0)) * 100%),
-      var(--planet-white)
-    );
-  }
-  .paths__rule {
-    flex: none;
-    width: 0;
-    height: var(--line-width);
-    background: color-mix(
-      in srgb,
-      var(--planet-primary) calc((1 - var(--text-invert, 0)) * 100%),
-      var(--planet-white)
-    );
-    transition: width 900ms var(--ease-out);
-  }
-  .paths__way.is-visible .paths__rule {
+  .paths__way.is-visible .fit__rule {
     width: clamp(2rem, 4vw, 3.5rem);
   }
-  .paths__way:nth-child(1).is-visible .paths__rule { transition-delay: 80ms; }
-  .paths__way:nth-child(2).is-visible .paths__rule { transition-delay: 200ms; }
+  .paths__way:nth-child(1).is-visible .fit__rule { transition-delay: 80ms; }
+  .paths__way:nth-child(2).is-visible .fit__rule { transition-delay: 200ms; }
+  .paths__way:nth-child(3).is-visible .fit__rule { transition-delay: 320ms; }
   .paths__way h2 {
     /* gleiche Type Scale wie .section-head h2 */
     max-width: 18ch;
@@ -899,13 +899,9 @@
     .section-head--reveal h2 { clip-path: none; }
     .section-head--reveal.is-visible::after,
     .section-head--reveal::after { width: 100%; }
-    .paths__rule,
-    .paths__way.is-visible .paths__rule {
-      width: clamp(2rem, 4vw, 3.5rem);
-      transition: none;
-    }
     .fit__rule,
-    .fit__item.is-visible .fit__rule {
+    .fit__item.is-visible .fit__rule,
+    .paths__way.is-visible .fit__rule {
       width: clamp(2rem, 4vw, 3.5rem);
       transition: none;
     }
@@ -965,6 +961,9 @@
     #hebel .stance__body p {
       color: var(--planet-white);
     }
+    #hebel .pillar-orbit__caption text {
+      fill: var(--planet-white);
+    }
     #wege {
       --text-invert: 1;
     }
@@ -975,6 +974,8 @@
     #wege.paths-scroll .fit__payoff {
       color: var(--planet-white);
     }
+    #wege.paths-scroll .fit__index { color: var(--planet-white); }
+    #wege.paths-scroll .fit__rule { background: var(--planet-white); }
     #stats {
       --text-invert: 1;
     }
@@ -3328,6 +3329,17 @@
           <div class="pillar-orbit__media">
             <div class="pillar-circle-img" style="background: #c4c4c0;" role="img" aria-label=""></div>
           </div>
+          <svg class="pillar-orbit__caption" viewBox="0 0 100 100" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <defs>
+              <path id="orbit-hebel" fill="none" d="M50,50 m-47,0 a47,47 0 1,1 94,0 a47,47 0 1,1 -94,0"/>
+            </defs>
+            <text class="de">
+              <textPath href="#orbit-hebel" xlink:href="#orbit-hebel" startOffset="8%">Bildunterschrift</textPath>
+            </text>
+            <text class="en">
+              <textPath href="#orbit-hebel" xlink:href="#orbit-hebel" startOffset="8%">Caption</textPath>
+            </text>
+          </svg>
         </div>
       </div>
       <div class="stance__body flow reveal-slide-right">
@@ -3500,9 +3512,9 @@
     <div class="paths__grid reveal">
       <article class="paths__way paths__way--a flow reveal">
         <div class="paths__head">
-          <div class="paths__cue" aria-hidden="true">
-            <span class="paths__index">01</span>
-            <span class="paths__rule"></span>
+          <div class="fit__cue" aria-hidden="true">
+            <span class="fit__index">01</span>
+            <span class="fit__rule"></span>
           </div>
           <h2><span class="de">Teile abgeben</span><span class="en">Hand over parts</span></h2>
         </div>
@@ -3515,9 +3527,9 @@
       </article>
       <article class="paths__way paths__way--b flow reveal">
         <div class="paths__head">
-          <div class="paths__cue" aria-hidden="true">
-            <span class="paths__index">02</span>
-            <span class="paths__rule"></span>
+          <div class="fit__cue" aria-hidden="true">
+            <span class="fit__index">02</span>
+            <span class="fit__rule"></span>
           </div>
           <h2><span class="de">Beteiligt bleiben</span><span class="en">Stay invested</span></h2>
         </div>
@@ -3530,9 +3542,9 @@
       </article>
       <article class="paths__way paths__way--c flow reveal">
         <div class="paths__head">
-          <div class="paths__cue" aria-hidden="true">
-            <span class="paths__index">03</span>
-            <span class="paths__rule"></span>
+          <div class="fit__cue" aria-hidden="true">
+            <span class="fit__index">03</span>
+            <span class="fit__rule"></span>
           </div>
           <h2><span class="de">Erstmal nur reden</span><span class="en">Just talk first</span></h2>
         </div>
