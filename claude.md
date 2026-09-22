@@ -27,7 +27,8 @@ Patterns that live in the product (and as live examples in `UX-Styleguide.html`)
 
 ## Website
 
-- `planet-website.html` — aktuelle Live-/Hauptversion (Wachstum und Nachfolge). Assets: `planet.css`, `assets/…`.
+- `planet-website.html` — Startseite, nur die Weiche. Kein Hero, kein Outro. Zwei Türen: Wachstum → `planet-website-wachstum.html`, Nachfolge → `planet-website-nachfolge.html`.
+- `planet-website-wachstum.html` — Funnel für Gründer, die weiterbauen und den Rest abgeben. Dramaturgie Du → Leistung → Planet → Qualifikation. Fragebogen sendet immer `Weg: Wachstum` plus `Quelle: Wachstum-Seite`. `#hebel` und `#wege` sind eigene Blau-Bänder; `#stats` sitzt im Band von `#zahlen`. `#team` bleibt zwischen `#stats` und `#kriterien`.
 - `planet-website-nachfolge.html` — spezialisierte Nachfolge-Variante. Dieselbe Technik und dieselben Assets, Copy nur für Unternehmer, die ihr Unternehmen in gute Hände geben wollen.
 
 ## Arbeitsweise
@@ -35,7 +36,7 @@ Patterns that live in the product (and as live examples in `UX-Styleguide.html`)
 - **Keine Screenshots und keine Browser-Durchläufe zur Routine-Kontrolle.** Änderungen, die am Code eindeutig ablesbar sind, direkt umsetzen und in Worten beschreiben.
 - Nur wenn eine Ursache am Code wirklich nicht erkennbar ist (z. B. Umbruch-/Layout-Verhalten, das erst beim Rendern entsteht), im Browser nachmessen — **vorher kurz fragen**.
 - **Nach dem Push immer nach `main` mergen.** GitHub Pages baut aus `main`; ohne Merge landet nichts in der Vorschau. Nicht jedes Mal nachfragen.
-- Vorschau-URLs: [Live-Fassung](https://planet-group.github.io/Planet/planet-website.html) · [Nachfolge](https://planet-group.github.io/Planet/planet-website-nachfolge.html). Es gibt **keine** Seite unter `/Planet/` (404) — `/Planet/Pages/` ist der Signatur-Generator, nicht die Website.
+- Vorschau-URLs: [Start](https://planet-group.github.io/Planet/planet-website.html) · [Wachstum](https://planet-group.github.io/Planet/planet-website-wachstum.html) · [Nachfolge](https://planet-group.github.io/Planet/planet-website-nachfolge.html). Es gibt **keine** Seite unter `/Planet/` (404) — `/Planet/Pages/` ist der Signatur-Generator, nicht die Website.
 
 ## Open todos (`planet-website.html`)
 
