@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Planet — Wachstum für Gründer in der Tiergesundheit</title>
+<title>Planet — Wachstum für Unternehmer in der Tiergesundheit</title>
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -289,18 +289,19 @@
     line-height: 1.4;
     color: var(--planet-black);
   }
-  /* #karten — Blau über html-Scroll-Farbe, Sektion transparent (keine Ränder) */
-  #karten {
+  /* #haltung — Blau über html-Scroll-Farbe, Sektion transparent (keine Ränder) */
+  #haltung {
     background: transparent;
   }
-  #karten .stance__body p {
+  #haltung .section-head h2,
+  #haltung .stance__body p {
     color: color-mix(
       in srgb,
       var(--planet-black) calc((1 - var(--text-invert, 0)) * 100%),
       var(--planet-white)
     );
   }
-  #karten .pillar-orbit__caption text {
+  #haltung .pillar-orbit__caption text {
     fill: color-mix(
       in srgb,
       var(--planet-primary) calc((1 - var(--text-invert, 0)) * 100%),
@@ -419,6 +420,16 @@
   .paths__way:nth-child(1).is-visible .fit__rule { transition-delay: 80ms; }
   .paths__way:nth-child(2).is-visible .fit__rule { transition-delay: 200ms; }
   .paths__way:nth-child(3).is-visible .fit__rule { transition-delay: 320ms; }
+  .paths__way:nth-child(4).is-visible .fit__rule { transition-delay: 440ms; }
+  #wege .paths__body a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+  #wege .paths__body a .material-symbols-outlined {
+    font-size: 1.05em;
+    vertical-align: -0.12em;
+  }
   .paths__way h2 {
     /* gleiche Type Scale wie .section-head h2 */
     max-width: 18ch;
@@ -945,13 +956,14 @@
       transition: none;
     }
     #plattform.plattform-scroll { background: transparent; }
-    #karten {
+    #haltung {
       --text-invert: 1;
     }
-    #karten .stance__body p {
+    #haltung .section-head h2,
+    #haltung .stance__body p {
       color: var(--planet-white);
     }
-    #karten .pillar-orbit__caption text {
+    #haltung .pillar-orbit__caption text {
       fill: var(--planet-white);
     }
     #hebel {
@@ -982,9 +994,6 @@
     #stats .stat-strip__num,
     #stats .stat-strip__label {
       color: var(--planet-white);
-    }
-    #unterschied {
-      --text-invert: 1;
     }
     #weiter {
       --text-invert: 1;
@@ -1874,13 +1883,6 @@
     );
     padding: var(--space-10) 0;
     background: transparent;
-  }
-  #unterschied .section-head h2 {
-    color: color-mix(
-      in srgb,
-      var(--planet-black) calc((1 - var(--text-invert, 0)) * 100%),
-      var(--planet-white)
-    );
   }
   .compare .section-head--reveal::after {
     background: var(--line-color);
@@ -2922,7 +2924,6 @@
     <a class="nav-overlay-link" href="#wege"><span class="de">Wie weit</span><span class="en">How far</span></a>
     <a class="nav-overlay-link" href="#tempo"><span class="de">Tempo</span><span class="en">Pace</span></a>
     <a class="nav-overlay-link" href="#haltung"><span class="de">Haltung</span><span class="en">Who we are</span></a>
-    <a class="nav-overlay-link" href="#unterschied"><span class="de">Unterschied</span><span class="en">Why us</span></a>
     <a class="nav-overlay-link" href="#mission"><span class="de">Mission</span><span class="en">Mission</span></a>
     <a class="nav-overlay-link" href="#marken"><span class="de">Marken</span><span class="en">Brands</span></a>
     <a class="nav-overlay-link" href="#team"><span class="de">Team</span><span class="en">Team</span></a>
@@ -3305,8 +3306,8 @@
       </li>
     </ul>
     <p class="stance-lines__close reveal">
-      <span class="de">Nichts davon hat dich zum Gründen gebracht. Trotzdem kostet es dich die meiste Zeit.</span>
-      <span class="en">None of this is why you started a company. It still takes up most of your time.</span>
+      <span class="de">Deswegen bist du nicht Unternehmer geworden. Trotzdem kostet es dich die meiste Zeit.</span>
+      <span class="en">That’s not why you became an entrepreneur. It still takes up most of your time.</span>
     </p>
   </div>
 </section>
@@ -3348,8 +3349,8 @@
           <span class="en">You don’t need to hire anyone, brief an agency or set up a new system. As part of Planet Group you plug into departments that already exist — sales, logistics, controlling, IT, recruiting. You decide what you hand over. Everything else stays yours.</span>
         </p>
         <p>
-          <span class="de">Du willst neue Märkte? Dann mach Märkte. Du willst am Produkt bleiben? Dann bleib am Produkt. Alles andere kann bei uns liegen. Du gibst nichts auf. Du bekommst dazu.</span>
-          <span class="en">You want new markets? Then do markets. You want to stay with the product? Then stay with the product. Everything else can sit with us. You’re not giving anything up. You’re gaining.</span>
+          <span class="de">Du willst neue Märkte? Dann mach Märkte. Du willst Produkte entwickeln? Dann entwickle Produkte. Alles andere kann bei uns liegen. Du gibst nichts auf. Du bekommst dazu.</span>
+          <span class="en">You want new markets? Then do markets. You want to develop products? Then develop products. Everything else can sit with us. You’re not giving anything up. You’re gaining.</span>
         </p>
       </div>
     </div>
@@ -3555,6 +3556,28 @@
           </p>
         </div>
       </article>
+      <article class="paths__way paths__way--c flow reveal">
+        <div class="paths__head">
+          <div class="fit__cue" aria-hidden="true">
+            <span class="fit__index">04</span>
+            <span class="fit__rule"></span>
+          </div>
+          <h2><span class="de">Oder doch verkaufen</span><span class="en">Or sell after all</span></h2>
+        </div>
+        <div class="paths__body flow">
+          <p>
+            <span class="de">Vielleicht merkst du beim Lesen, dass es dir weniger ums Wachsen geht als ums Übergeben. Auch dafür gibt es bei uns einen Weg.</span>
+            <span class="en">Maybe while reading you realise this is less about growing than about handing over. There’s a path for that with us too.</span>
+          </p>
+          <p>
+            <a href="planet-website-nachfolge.html">
+              <span class="de">Zur Unternehmensnachfolge</span>
+              <span class="en">To business succession</span>
+              <span class="material-symbols-outlined" aria-hidden="true">arrow_outward</span>
+            </a>
+          </p>
+        </div>
+      </article>
     </div>
     <div class="section-head section-head--reveal reveal fit__subhead">
       <div>
@@ -3595,8 +3618,8 @@
       </li>
     </ul>
     <p class="fit__payoff reveal">
-      <span class="de">Dein Unternehmen wächst, ohne dass du alles selbst machst. Und du bleibst der, der es gegründet hat.</span>
-      <span class="en">The company grows without you doing all of it yourself. And you stay the one who started it.</span>
+      <span class="de">Dein Unternehmen wächst, ohne dass du alles selbst machst. Und du bleibst der, der es aufgebaut hat.</span>
+      <span class="en">The company grows without you doing all of it yourself. And you stay the person who built it.</span>
     </p>
   </div>
 </section>
@@ -3643,22 +3666,37 @@
   </div>
 </section>
 
-<!-- HALTUNG -->
-<section class="stance" id="haltung">
+<!-- HALTUNG → ZITAT → MISSION — ein Blau-Band -->
+<div data-band-blue>
+<section class="stance stance--flip" id="haltung">
   <div class="container">
     <div class="section-head section-head--bottom section-head--reveal reveal">
       <div>
         <h2>
           <span class="de">Kein Fonds. Keine Bank. Unternehmer – genau wie du.</span>
-          <span class="en">Not a fund. Not a bank. Founders — like you.</span>
+          <span class="en">Not a fund. Not a bank. Entrepreneurs — like you.</span>
         </h2>
       </div>
     </div>
     <div class="stance__grid">
+      <div class="stance__body flow reveal-slide-left">
+        <p>
+          <span class="de">Wenn du mit uns sprichst, sitzt dir deshalb kein Private-Equity-Fonds gegenüber und keine Bank — sondern Unternehmer, denen die Gruppe zu 100&nbsp;% selbst gehört. Niemand, der dein Unternehmen nach acht Jahren weiterverkaufen muss. Niemand, der nur deine Zahlen sieht und nicht die Tiere dahinter.</span>
+          <span class="en">When you sit down with us, there is no PE fund across the table. No bank. Founders who own the group, 100%. Nobody who has to sell your company after eight years. Nobody who only sees the numbers and misses the animals.</span>
+        </p>
+        <p>
+          <span class="de">Und ja: Geld verdienen wollen wir trotzdem — wie du auch. Wir spielen mit offenen Karten. Das kannst du von uns erwarten.</span>
+          <span class="en">And yes — we want to make money. Same as you. We’ll put that on the table. You can hold us to it.</span>
+        </p>
+        <p>
+          <span class="de">Was du aufgebaut hast, verdient mehr als eine Exit-Frist. Du brauchst keinen Investor. Du brauchst Unternehmer, die weiterbauen statt weiterverkaufen.</span>
+          <span class="en">What you’ve built deserves more than an exit deadline. You don’t need an investor. You need entrepreneurs who keep building instead of selling on.</span>
+        </p>
+      </div>
       <div class="stance__media reveal-scale">
         <div class="pillar-orbit">
           <div class="pillar-orbit__media">
-            <div class="pillar-circle-img" style="background-image: url('assets/images/326---Inuvet-Sommerfest-2026_Tag-01_326.jpg');" role="img" aria-label=""></div>
+            <div class="pillar-circle-img" style="background-image: url('assets/images/273---Inuvet-Sommerfest-2026_Tag-01_273.jpg');" role="img" aria-label=""></div>
           </div>
           <svg class="pillar-orbit__caption" viewBox="0 0 100 100" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
             <defs>
@@ -3670,121 +3708,6 @@
           </svg>
         </div>
       </div>
-      <div class="stance__body flow reveal-slide-right">
-        <p>
-          <span class="de">Vielleicht hast du dein Unternehmen gegründet, weil dir etwas gefehlt hat: ein Produkt, das es für dein Tier so nicht gab. Bei uns war es genauso.</span>
-          <span class="en">Maybe you started the company because something was missing: a product that didn’t exist for your animal. Same for us.</span>
-        </p>
-        <p>
-          <span class="de">Aus dieser Tierliebe ist die Planet Group gewachsen — ein Unternehmen mit einer Mission: Tiere natürlich gesund machen. Und mit einer Leidenschaft: Unternehmen beim Wachsen begleiten. Deins vielleicht auch.</span>
-          <span class="en">Out of that love of animals, Planet Group grew — a company with a mission: keep animals healthy, naturally. And a passion: help companies grow. Yours, maybe.</span>
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- KARTEN → UNTERSCHIED → ZITAT → MISSION — ein Blau-Band -->
-<div data-band-blue>
-<section class="stance stance--flip" id="karten">
-  <div class="container">
-    <div class="stance__grid">
-      <div class="stance__body flow reveal-slide-left">
-        <p>
-          <span class="de">Wenn du mit uns sprichst, sitzt dir deshalb kein Private-Equity-Fonds gegenüber und keine Bank — sondern Unternehmer, denen die Gruppe zu 100&nbsp;% selbst gehört. Niemand, der dein Unternehmen nach acht Jahren weiterverkaufen muss. Niemand, der nur deine Zahlen sieht und nicht die Tiere dahinter.</span>
-          <span class="en">When you sit down with us, there is no PE fund across the table. No bank. Founders who own the group, 100%. Nobody who has to sell your company after eight years. Nobody who only sees the numbers and misses the animals.</span>
-        </p>
-        <p>
-          <span class="de">Und ja: Geld verdienen wollen wir trotzdem — wie du auch. Wir spielen mit offenen Karten. Das kannst du von uns erwarten.</span>
-          <span class="en">And yes — we want to make money. Same as you. We’ll put that on the table. You can hold us to it.</span>
-        </p>
-      </div>
-      <div class="stance__media reveal-scale">
-        <div class="pillar-orbit">
-          <div class="pillar-orbit__media">
-            <div class="pillar-circle-img" style="background-image: url('assets/images/273---Inuvet-Sommerfest-2026_Tag-01_273.jpg');" role="img" aria-label=""></div>
-          </div>
-          <svg class="pillar-orbit__caption" viewBox="0 0 100 100" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <defs>
-              <path id="orbit-karten" fill="none" d="M50,50 m-47,0 a47,47 0 1,1 94,0 a47,47 0 1,1 -94,0"/>
-            </defs>
-            <text>
-              <textPath href="#orbit-karten" xlink:href="#orbit-karten" startOffset="8%">Bild: Planet Sommerparty 2026</textPath>
-            </text>
-          </svg>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- UNTERSCHIED -->
-<section class="compare" id="unterschied">
-  <div class="container">
-    <div class="section-head section-head--reveal reveal">
-      <div>
-        <h2>
-          <span class="de">Ein Unterschied, der zählt.</span>
-          <span class="en">What actually changes.</span>
-        </h2>
-      </div>
-    </div>
-    <div class="compare__layout reveal">
-      <div class="compare__head">
-        <span class="compare__side compare__side--pe">
-          <span class="compare__icon" aria-hidden="true"></span>
-          <span class="de">Investor</span>
-          <span class="en">Investor</span>
-        </span>
-        <span class="compare__side compare__side--planet">
-          <span class="compare__icon" aria-hidden="true"></span>
-          Planet
-        </span>
-      </div>
-      <div class="compare__rule compare__rule--span">
-        <span class="compare__rule-slot">
-          <span class="compare__label"><span class="de">Haltedauer</span><span class="en">Holding period</span></span>
-        </span>
-      </div>
-      <div class="compare__rows">
-        <div class="compare__row">
-          <div class="compare__cells">
-            <span class="compare__a"><span class="de">Exit nach 5–8 Jahren</span><span class="en">Exit after 5–8 years</span></span>
-            <span class="compare__b"><span class="de">Kein Exit-Datum</span><span class="en">No exit date</span></span>
-          </div>
-        </div>
-        <div class="compare__row">
-          <div class="compare__rule">
-            <span class="compare__label"><span class="de">Maßstab & Werte</span><span class="en">What counts</span></span>
-          </div>
-          <div class="compare__cells">
-            <span class="compare__a"><span class="de">Rendite zum Zeitpunkt des Verkaufs</span><span class="en">Return at sale</span></span>
-            <span class="compare__b"><span class="de">Marke, Team und Tiere</span><span class="en">Brand, team and animals</span></span>
-          </div>
-        </div>
-        <div class="compare__row">
-          <div class="compare__rule">
-            <span class="compare__label"><span class="de">Nach dem Kauf</span><span class="en">After the deal</span></span>
-          </div>
-          <div class="compare__cells">
-            <span class="compare__a"><span class="de">Effizienz und Optimierung der Kosten</span><span class="en">Cut costs. Squeeze the rest.</span></span>
-            <span class="compare__b"><span class="de">Aufbau: Vertrieb, Marketing, Operations</span><span class="en">Build: sales, marketing, operations</span></span>
-          </div>
-        </div>
-        <div class="compare__row">
-          <div class="compare__rule">
-            <span class="compare__label"><span class="de">Deine Rolle</span><span class="en">Your role</span></span>
-          </div>
-          <div class="compare__cells">
-            <span class="compare__a"><span class="de">vom Investor definiert</span><span class="en">the investor decides</span></span>
-            <span class="compare__b"><span class="de">gemeinsam definiert</span><span class="en">we decide together</span></span>
-          </div>
-        </div>
-      </div>
-      <p class="compare__closing">
-        <span class="de">Was du aufgebaut hast, verdient mehr als eine Exit-Frist. Du brauchst keinen Investor. Du brauchst Unternehmer, die weiterbauen statt weiterverkaufen.</span>
-        <span class="en">What you’ve built deserves more than an exit deadline. You don’t need an investor. You need entrepreneurs who keep building instead of selling on.</span>
-      </p>
     </div>
   </div>
 </section>
