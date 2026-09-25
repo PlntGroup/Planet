@@ -2,6 +2,14 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
+<script>
+try {
+  if (localStorage.getItem('planet-lang') === 'en') {
+    document.documentElement.classList.add('lang-en');
+    document.documentElement.lang = 'en';
+  }
+} catch (e) {}
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Planet — Wachstum für Unternehmer in der Tiergesundheit</title>
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
@@ -14,8 +22,8 @@
 <style>
   /* Sprach-Logik (funktional, kein visuelles Override) */
   .en { display: none; }
-  body.lang-en .de { display: none; }
-  body.lang-en .en { display: inline; }
+  html.lang-en .de { display: none; }
+  html.lang-en .en { display: inline; }
 
   /* Material Symbols — feinere Strichstärke als Icons Outlined */
   .material-symbols-outlined {
@@ -382,9 +390,15 @@
       var(--planet-white)
     );
   }
-  #hebel .pillar-orbit__caption text.en { display: none; }
-  body.lang-en #hebel .pillar-orbit__caption text.de { display: none; }
-  body.lang-en #hebel .pillar-orbit__caption text.en { display: block; }
+  #hebel .pillar-orbit__caption text.en,
+  #haltung .pillar-orbit__caption text.en,
+  #mission .pillar-orbit__caption text.en { display: none; }
+  html.lang-en #hebel .pillar-orbit__caption text.de,
+  html.lang-en #haltung .pillar-orbit__caption text.de,
+  html.lang-en #mission .pillar-orbit__caption text.de { display: none; }
+  html.lang-en #hebel .pillar-orbit__caption text.en,
+  html.lang-en #haltung .pillar-orbit__caption text.en,
+  html.lang-en #mission .pillar-orbit__caption text.en { display: block; }
   /* #stats — im Blau-Band von #zahlen */
   #stats {
     background: transparent;
@@ -1315,8 +1329,8 @@
   }
   /* planet.css setzt .quote-type__who span auf display:block — sonst beide Sprachen sichtbar */
   #grundsatz-zitat .quote-type__who > .en { display: none; }
-  body.lang-en #grundsatz-zitat .quote-type__who > .de { display: none; }
-  body.lang-en #grundsatz-zitat .quote-type__who > .en { display: inline; }
+  html.lang-en #grundsatz-zitat .quote-type__who > .de { display: none; }
+  html.lang-en #grundsatz-zitat .quote-type__who > .en { display: inline; }
   #grundsatz-zitat .quote-type__who > .de,
   #grundsatz-zitat .quote-type__who > .en {
     opacity: 1;
@@ -2918,18 +2932,18 @@
 
 <div class="nav-overlay" role="dialog" aria-label="Navigation">
   <nav class="nav-overlay-links">
-    <a class="nav-overlay-link" href="#unternehmer"><span class="de">Unternehmer</span><span class="en">Entrepreneurs</span></a>
-    <a class="nav-overlay-link" href="#hebel"><span class="de">Hebel</span><span class="en">The lever</span></a>
-    <a class="nav-overlay-link" href="#infrastruktur"><span class="de">Infrastruktur</span><span class="en">Infrastructure</span></a>
+    <a class="nav-overlay-link" href="#unternehmer"><span class="de">Unternehmer</span><span class="en">Founders</span></a>
+    <a class="nav-overlay-link" href="#hebel"><span class="de">Hebel</span><span class="en">Offer</span></a>
+    <a class="nav-overlay-link" href="#infrastruktur"><span class="de">Infrastruktur</span><span class="en">Back office</span></a>
     <a class="nav-overlay-link" href="#wege"><span class="de">Wie weit</span><span class="en">How far</span></a>
     <a class="nav-overlay-link" href="#tempo"><span class="de">Tempo</span><span class="en">Pace</span></a>
-    <a class="nav-overlay-link" href="#haltung"><span class="de">Haltung</span><span class="en">Who we are</span></a>
+    <a class="nav-overlay-link" href="#haltung"><span class="de">Haltung</span><span class="en">Stance</span></a>
     <a class="nav-overlay-link" href="#mission"><span class="de">Mission</span><span class="en">Mission</span></a>
     <a class="nav-overlay-link" href="#marken"><span class="de">Marken</span><span class="en">Brands</span></a>
     <a class="nav-overlay-link" href="#team"><span class="de">Team</span><span class="en">Team</span></a>
-    <a class="nav-overlay-link" href="#kriterien"><span class="de">Kriterien</span><span class="en">Fit</span></a>
-    <a class="nav-overlay-link" href="#kontakt"><span class="de">Kontakt</span><span class="en">Get in touch</span></a>
-    <a class="nav-overlay-link nav-overlay-link--cta" href="#fragebogen"><span class="de">Passt es? — 3 Minuten</span><span class="en">Is this a fit? — 3 minutes</span></a>
+    <a class="nav-overlay-link" href="#kriterien"><span class="de">Kriterien</span><span class="en">Criteria</span></a>
+    <a class="nav-overlay-link" href="#kontakt"><span class="de">Kontakt</span><span class="en">Contact</span></a>
+    <a class="nav-overlay-link nav-overlay-link--cta" href="#fragebogen"><span class="de">Passt es? — 3 Minuten</span><span class="en">Good fit? — 3 minutes</span></a>
   </nav>
 </div>
 
@@ -2944,21 +2958,21 @@
         <article class="principles-overlay__col">
           <h3><span class="de">Fokus</span><span class="en">Focus</span></h3>
           <ul>
-            <li><span class="de">Wir machen Kunden zu Fans.</span><span class="en">We turn customers into fans.</span></li>
-            <li><span class="de">Wir geben mehr als wir versprechen.</span><span class="en">We deliver more than we promise.</span></li>
-            <li><span class="de">Wir setzen uns Ziele.</span><span class="en">We set goals.</span></li>
-            <li><span class="de">Wir halten uns an Termine und Verpflichtungen.</span><span class="en">We keep our deadlines and our word.</span></li>
+            <li><span class="de">Wir machen Kunden zu Fans.</span><span class="en">We turn customers into raving fans.</span></li>
+            <li><span class="de">Wir geben mehr als wir versprechen.</span><span class="en">We always overdeliver.</span></li>
+            <li><span class="de">Wir setzen uns Ziele.</span><span class="en">We set clear goals.</span></li>
+            <li><span class="de">Wir halten uns an Termine und Verpflichtungen.</span><span class="en">We honor our commitments and our deadlines.</span></li>
           </ul>
         </article>
         <article class="principles-overlay__col">
           <h3><span class="de">Teamgeist</span><span class="en">Team spirit</span></h3>
           <ul>
             <li><span class="de">Wir mögen Menschen. Wir lieben Tiere.</span><span class="en">We like people. We love animals.</span></li>
-            <li><span class="de">Wir sind ein geiles Team und haben Spaß.</span><span class="en">We’re a damn good team, and we have fun.</span></li>
-            <li><span class="de">Wir helfen uns gegenseitig (zur Selbsthilfe).</span><span class="en">We help each other stand on our own two feet.</span></li>
-            <li><span class="de">Wir feiern zusammen unsere Erfolge.</span><span class="en">We celebrate wins together.</span></li>
-            <li><span class="de">Wir sind offen und direkt.</span><span class="en">We’re open and direct.</span></li>
-            <li><span class="de">Wir finden für jeden, der unsere Grundsätze lebt, den richtigen Job.</span><span class="en">If you live our principles, we’ll find you the right job.</span></li>
+            <li><span class="de">Wir sind ein geiles Team und haben Spaß.</span><span class="en">We're a kick-ass team and we love what we do.</span></li>
+            <li><span class="de">Wir helfen uns gegenseitig (zur Selbsthilfe).</span><span class="en">We lift each other up and empower one another.</span></li>
+            <li><span class="de">Wir feiern zusammen unsere Erfolge.</span><span class="en">We celebrate our wins together.</span></li>
+            <li><span class="de">Wir sind offen und direkt.</span><span class="en">We are open and straightforward.</span></li>
+            <li><span class="de">Wir finden für jeden, der unsere Grundsätze lebt, den richtigen Job.</span><span class="en">If you live by our principles, there's a place for you here.</span></li>
           </ul>
         </article>
         <article class="principles-overlay__col">
@@ -2966,24 +2980,24 @@
           <ul>
             <li><span class="de">Wir haben Spaß.</span><span class="en">We have fun.</span></li>
             <li><span class="de">Wir teilen unser Wissen.</span><span class="en">We share our knowledge.</span></li>
-            <li><span class="de">Jede Tätigkeit ist gleich viel wert.</span><span class="en">No job here is beneath anyone.</span></li>
-            <li><span class="de">Die richtigen Fragen bringen die besten Lösungen.</span><span class="en">Ask better questions, get better answers.</span></li>
-            <li><span class="de">Wir arbeiten immer im konstruktiven Modus. Im Zentrum jeder Diskussion steht die angestrebte Lösung.</span><span class="en">We stay in problem-solving mode. Every conversation is about the answer.</span></li>
-            <li><span class="de">Festina Lente — Eile mit Weile, schnell und agil, aber nicht überhastet.</span><span class="en">Festina lente — make haste slowly. Move fast. Don’t rush.</span></li>
+            <li><span class="de">Jede Tätigkeit ist gleich viel wert.</span><span class="en">Every role matters equally.</span></li>
+            <li><span class="de">Die richtigen Fragen bringen die besten Lösungen.</span><span class="en">The best solutions start with the right questions.</span></li>
+            <li><span class="de">Wir arbeiten immer im konstruktiven Modus. Im Zentrum jeder Diskussion steht die angestrebte Lösung.</span><span class="en">We stay constructive. Every discussion is focused on finding a solution.</span></li>
+            <li><span class="de">Festina Lente — Eile mit Weile, schnell und agil, aber nicht überhastet.</span><span class="en">Festina Lente — make haste slowly. We move fast and stay agile, but we never rush.</span></li>
           </ul>
         </article>
         <article class="principles-overlay__col">
-          <h3><span class="de">Entwicklung</span><span class="en">Growth</span></h3>
+          <h3><span class="de">Entwicklung</span><span class="en">Development</span></h3>
           <ul>
-            <li><span class="de">Ich nehme mich selbst nicht so ernst.</span><span class="en">I don’t take myself too seriously.</span></li>
-            <li><span class="de">Ich bin immer ehrlich (besonders zu mir selbst).</span><span class="en">I’m always honest (especially with myself).</span></li>
-            <li><span class="de">Ich darf so sein wie ich bin.</span><span class="en">I get to be myself.</span></li>
-            <li><span class="de">Ich bin neugierig wie ein kleines Kind.</span><span class="en">I stay curious.</span></li>
-            <li><span class="de">Ich liebe Veränderung.</span><span class="en">I love change.</span></li>
-            <li><span class="de">Ich arbeite jeden Tag an mir (Zeit für Lesen und Nachdenken).</span><span class="en">I work on myself every day. I make time to read and think.</span></li>
-            <li><span class="de">Ich mache mich nicht zum Opfer.</span><span class="en">I don’t play the victim.</span></li>
-            <li><span class="de">Ich entscheide selbst und übernehme Verantwortung.</span><span class="en">I make the call. I own the outcome.</span></li>
-            <li><span class="de">Ich bin dankbar.</span><span class="en">I’m grateful.</span></li>
+            <li><span class="de">Ich nehme mich selbst nicht so ernst.</span><span class="en">I don't take myself too seriously.</span></li>
+            <li><span class="de">Ich bin immer ehrlich (besonders zu mir selbst).</span><span class="en">I am always honest (especially with myself).</span></li>
+            <li><span class="de">Ich darf so sein wie ich bin.</span><span class="en">I am free to be myself.</span></li>
+            <li><span class="de">Ich bin neugierig wie ein kleines Kind.</span><span class="en">I stay as curious as a kid.</span></li>
+            <li><span class="de">Ich liebe Veränderung.</span><span class="en">I embrace change.</span></li>
+            <li><span class="de">Ich arbeite jeden Tag an mir (Zeit für Lesen und Nachdenken).</span><span class="en">I work on myself every single day (and make time to read and reflect).</span></li>
+            <li><span class="de">Ich mache mich nicht zum Opfer.</span><span class="en">I don't play the victim.</span></li>
+            <li><span class="de">Ich entscheide selbst und übernehme Verantwortung.</span><span class="en">I make decisions and own the outcomes.</span></li>
+            <li><span class="de">Ich bin dankbar.</span><span class="en">I practice gratitude.</span></li>
           </ul>
         </article>
       </div>
@@ -2996,33 +3010,33 @@
     <div class="principles-overlay__inner">
       <h2 class="principles-overlay__title" id="mission-overlay-title">
         <span class="de">Unternehmensziel: Glück</span>
-        <span class="en">The point is happiness</span>
+        <span class="en">Our goal: happiness</span>
       </h2>
       <div class="principles-overlay__grid principles-overlay__grid--mission">
         <article class="principles-overlay__col">
           <ul>
             <li>
               <span class="de">Unsere Mission ist dein Glück und unser Glück. Wir sind überzeugt, dass erfolgreiche und glückliche Unternehmen nur von glücklichen Menschen geschaffen werden können. Unternehmensziel: Glück ist das Fundament unseres Erfolgs, und Erfolg ist die Basis unseres Glücks.</span>
-              <span class="en">Your happiness is the mission. Ours too. Great companies are built by people who actually like their lives. Happiness is how we succeed — and success is how happiness lasts.</span>
+              <span class="en">Our mission is your happiness—and ours. We firmly believe that successful, thriving companies are built by happy people. Happiness is the foundation of our success, just as success fuels our happiness.</span>
             </li>
             <li>
               <span class="de">Doch eines ist klar: Glück jagt man nicht hinterher – man kultiviert es jeden Tag. Wie alles im Leben wächst auch das Glück, wenn man daran arbeitet. Und machen wir uns nichts vor – es ist nicht immer einfach. Aber einfach ist auch nicht das, wonach wir suchen. Was zählt, ist die Mühe, die wir hineinstecken, und der Fortschritt, den wir Schritt für Schritt machen.</span>
-              <span class="en">You don’t chase happiness. You grow it. Same as anything else worth having: it gets bigger when you work at it. That’s not always easy. Easy was never the brief. What counts is the work, and the ground you gain.</span>
+              <span class="en">But let's be clear: you don't just chase happiness—you cultivate it, every single day. Like anything else in life, happiness grows when you put the work in. Let’s be honest, it isn't always easy. But we're not looking for easy. What matters is the effort we invest and the steady progress we make along the way.</span>
             </li>
             <li>
               <span class="de">Mit Bescheidenheit, den Füßen fest auf dem Boden und den Augen auf massive 10x-Ziele gerichtet, wollen wir die Welt um uns herum jeden Tag ein kleines bisschen besser und schöner machen. Mit unseren Produkten, unserem Service und unserer Kreativität möchten wir Freude verbreiten – immer mit Begeisterung und einem Lächeln. Wir streben danach, gute Menschen zu sein – mutig, gerecht, diszipliniert und weise. Wir suchen nach einem Selbstwertgefühl, das unabhängig von äußeren Einflüssen und Meinungen ist. Wir wollen bedeutsame Beziehungen zu unseren Mitmenschen aufbauen. Und vor allem streben wir nach Glück und Zufriedenheit.</span>
-              <span class="en">Feet on the ground. Eyes on 10x goals. We want the world around us a little better, and a little more beautiful, every day. Products, service, craft — we want them to land as joy. Energy on. Smile on. We try to be decent people: brave, fair, disciplined, wise. We want self-worth that doesn’t hinge on other people’s opinions. We want real relationships. And more than anything, we want to be happy — and okay.</span>
+              <span class="en">Staying grounded and humble, yet keeping our eyes fixed on massive 10x goals, we want to make the world around us a little better and brighter every day. Through our products, our service, and our creativity, we aim to spread joy—always with passion and a smile. We strive to be good humans: courageous, fair, disciplined, and wise. We seek a sense of self-worth that isn't dictated by outside opinions. We want to build meaningful relationships with the people around us. But above all, we strive for happiness and fulfillment.</span>
             </li>
             <li>
               <span class="de">Unternehmensziel: Glück ist für alle, die sich voller Begeisterung auf diese Reise einlassen. Es ist für alle, die bereit sind, jeden Tag ihr Bestes zu geben, um zu wachsen und sich weiterzuentwickeln. Unternehmensziel: Glück ist für Menschen, die mit ganzem Herzen lieben – die Menschen, Tiere und das Leben selbst wertschätzen. Es ist für die Rechtschaffenen, die den Mut haben, das Richtige zu tun. Für die Fröhlichen, die das Leben mit Leichtigkeit sehen. Für die Frechen, die den Mut haben, anders zu denken. Für die Dankbaren, die in jedem Moment etwas Gutes finden. Und für die Pippi Langstrumpfs dieser Welt, die mit Fantasie und Abenteuerlust Neues erschaffen. Unternehmensziel: Glück ist für Dich. Und für mich. Und für jeden, der daran glaubt, dass Glück wächst, wenn wir daran arbeiten.</span>
-              <span class="en">Happiness is for people who jump in with both feet. For anyone willing to show up and keep growing. It’s for people who love hard — people, animals, life. For anyone brave enough to do the right thing. Anyone who can take life lightly. Anyone who thinks sideways. Anyone grateful enough to find something good in the day. And for the Pippi Longstockings — the ones who invent the next thing out of sheer imagination. Happiness is for you. For me. For anyone who believes it grows if you work at it.</span>
+              <span class="en">Our ultimate goal—happiness—is for anyone who throws themselves completely into this journey. It’s for those willing to give their absolute best every day to grow and evolve. It’s for people who love with all their heart, who deeply value other people, animals, and life itself. It's for the honorable ones who have the courage to do what's right. For the cheerful souls who take life lightly. For the bold thinkers who dare to break the mold. For the grateful ones who find the good in every moment. And for the Pippi Longstockings of this world, who use their imagination and thirst for adventure to create something new. Happiness is for you. And for me. And for anyone who believes that happiness grows when we work for it.</span>
             </li>
           </ul>
         </article>
       </div>
       <p class="principles-overlay__tagline">
         <span class="de">Jeden Tag ein bisschen geiler.</span>
-        <span class="en">A little more awesome every day.</span>
+        <span class="en">A little more badass every single day.</span>
       </p>
     </div>
   </div>
@@ -3047,7 +3061,7 @@
 
       <h2 class="visually-hidden" id="quiz-title">
         <span class="de">Passt dein Unternehmen zu uns?</span>
-        <span class="en">Is this a fit?</span>
+        <span class="en">Is your business a good fit?</span>
       </h2>
 
       <!-- Empfänger: Torsten sichtet die Fragebögen und lädt persönlich ein -->
@@ -3057,28 +3071,28 @@
         <fieldset class="quiz__step is-active" data-quiz-step data-quiz-key="Umsatz">
           <legend class="quiz__q">
             <span class="de">Welche Umsatzgrößenordnung hat dein Unternehmen?</span>
-            <span class="en">What’s your revenue?</span>
+            <span class="en">Roughly what’s your company’s annual revenue?</span>
           </legend>
           <div class="quiz__options">
             <label class="quiz__option">
               <input type="radio" name="umsatz" value="unter 1 Mio €">
               <span class="quiz__option-key" aria-hidden="true">A</span>
-              <span class="quiz__option-text"><span class="de">Unter 1 Mio. €</span><span class="en">Under €1M</span></span>
+              <span class="quiz__option-text"><span class="de">Unter 1 Mio. €</span><span class="en">Under €1 million</span></span>
             </label>
             <label class="quiz__option">
               <input type="radio" name="umsatz" value="1–5 Mio €">
               <span class="quiz__option-key" aria-hidden="true">B</span>
-              <span class="quiz__option-text"><span class="de">1–5 Mio. €</span><span class="en">€1–5M</span></span>
+              <span class="quiz__option-text"><span class="de">1–5 Mio. €</span><span class="en">€1–5 million</span></span>
             </label>
             <label class="quiz__option">
               <input type="radio" name="umsatz" value="5–15 Mio €">
               <span class="quiz__option-key" aria-hidden="true">C</span>
-              <span class="quiz__option-text"><span class="de">5–15 Mio. €</span><span class="en">€5–15M</span></span>
+              <span class="quiz__option-text"><span class="de">5–15 Mio. €</span><span class="en">€5–15 million</span></span>
             </label>
             <label class="quiz__option">
               <input type="radio" name="umsatz" value="über 15 Mio €">
               <span class="quiz__option-key" aria-hidden="true">D</span>
-              <span class="quiz__option-text"><span class="de">Über 15 Mio. €</span><span class="en">Over €15M</span></span>
+              <span class="quiz__option-text"><span class="de">Über 15 Mio. €</span><span class="en">Over €15 million</span></span>
             </label>
           </div>
         </fieldset>
@@ -3093,17 +3107,17 @@
             <label class="quiz__option">
               <input type="radio" name="profitabel" value="ja, profitabel">
               <span class="quiz__option-key" aria-hidden="true">A</span>
-              <span class="quiz__option-text"><span class="de">Ja, profitabel</span><span class="en">Yes — profitable</span></span>
+              <span class="quiz__option-text"><span class="de">Ja, profitabel</span><span class="en">Yes, profitable</span></span>
             </label>
             <label class="quiz__option">
               <input type="radio" name="profitabel" value="klar auf dem Weg dahin">
               <span class="quiz__option-key" aria-hidden="true">B</span>
-              <span class="quiz__option-text"><span class="de">Klar auf dem Weg dahin</span><span class="en">On the way there</span></span>
+              <span class="quiz__option-text"><span class="de">Klar auf dem Weg dahin</span><span class="en">Clearly getting there</span></span>
             </label>
             <label class="quiz__option">
               <input type="radio" name="profitabel" value="noch nicht">
               <span class="quiz__option-key" aria-hidden="true">C</span>
-              <span class="quiz__option-text"><span class="de">Noch nicht</span><span class="en">Not yet</span></span>
+              <span class="quiz__option-text"><span class="de">Noch nicht</span><span class="en">No, not yet</span></span>
             </label>
           </div>
         </fieldset>
@@ -3112,7 +3126,7 @@
         <fieldset class="quiz__step" data-quiz-step data-quiz-key="Zeithorizont" hidden>
           <legend class="quiz__q">
             <span class="de">Bis wann willst du etwas verändern?</span>
-            <span class="en">What’s your timeline?</span>
+            <span class="en">When do you want things to change?</span>
           </legend>
           <div class="quiz__options">
             <label class="quiz__option">
@@ -3146,7 +3160,7 @@
           </legend>
           <p class="quiz__hint">
             <span class="de">Ein paar Sätze reichen. Je ehrlicher, desto besser können wir einschätzen, ob es passt.</span>
-            <span class="en">A few sentences is plenty. The more honest you are, the easier it is to tell if this is a fit.</span>
+            <span class="en">A few sentences are enough. The more honest you are, the better we can tell if this is a fit.</span>
           </p>
           <textarea
             class="quiz__textarea"
@@ -3162,11 +3176,11 @@
         <fieldset class="quiz__step" data-quiz-step data-quiz-key="Kontakt" hidden>
           <legend class="quiz__q">
             <span class="de">Wer bist du?</span>
-            <span class="en">How do we reach you?</span>
+            <span class="en">Who are you?</span>
           </legend>
           <p class="quiz__hint">
             <span class="de">Damit wir uns melden können. Keine Newsletter, keine Weitergabe.</span>
-            <span class="en">So we can get back to you. No newsletters. We don’t share your details.</span>
+            <span class="en">So we can get back to you. No newsletter, and we don’t pass anything on.</span>
           </p>
           <div class="quiz__fields">
             <div class="quiz__field">
@@ -3174,7 +3188,7 @@
               <input id="q-name" name="name" type="text" autocomplete="name" required placeholder="Alex Mertens">
             </div>
             <div class="quiz__field">
-              <label for="q-firma"><span class="de">Unternehmen</span><span class="en">Company</span></label>
+              <label for="q-firma"><span class="de">Unternehmen</span><span class="en">Company name</span></label>
               <input id="q-firma" name="unternehmen" type="text" autocomplete="organization" required placeholder="Mertens Tiergesundheit GmbH">
             </div>
             <div class="quiz__field">
@@ -3202,14 +3216,14 @@
           </button>
           <button type="submit" class="btn quiz__next" data-quiz-next>
             <span class="de" data-quiz-next-de>Weiter</span>
-            <span class="en" data-quiz-next-en>Continue</span>
+            <span class="en" data-quiz-next-en>Next</span>
             <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
           </button>
         </div>
 
         <p class="quiz__error" data-quiz-error role="alert">
           <span class="de">Senden fehlgeschlagen. Bitte nochmal versuchen oder direkt an hello@plnt.group schreiben.</span>
-          <span class="en">That didn’t send. Try again, or email hello@plnt.group.</span>
+          <span class="en">Sending failed. Try again, or email us at hello@plnt.group.</span>
         </p>
       </form>
 
@@ -3220,15 +3234,15 @@
         </span>
         <h3>
           <span class="de">Danke — angekommen.</span>
-          <span class="en">Thanks. We got it.</span>
+          <span class="en">Thanks, we got it.</span>
         </h3>
         <p>
           <span class="de">Wir prüfen deine Angaben und melden uns innerhalb von 2 Werktagen persönlich bei dir.</span>
-          <span class="en">We’ll read your answers and get in touch within two business days.</span>
+          <span class="en">We’ll review your details and get back to you personally within two business days.</span>
         </p>
         <p class="quiz__done-note">
           <span class="de">Wenn es dringend ist: <a href="mailto:hello@plnt.group">hello@plnt.group</a></span>
-          <span class="en">If it’s urgent: <a href="mailto:hello@plnt.group">hello@plnt.group</a></span>
+          <span class="en">If it’s urgent, shoot us an email at <a href="mailto:hello@plnt.group">hello@plnt.group</a></span>
         </p>
       </div>
     </div>
@@ -3245,7 +3259,7 @@
     <h1><span class="de">Bau weiter. Mit uns.</span><span class="en">Keep building. With us.</span></h1>
     <p class="hero-full__sub">
       <span class="de">Für Unternehmer in der Tiergesundheit, die schneller wachsen wollen — ohne ihre Firma aus der Hand zu geben.</span>
-      <span class="en">For entrepreneurs in animal health who want to grow faster — without giving up their company.</span>
+      <span class="en">For animal health entrepreneurs who want to accelerate growth—without giving up control of their business.</span>
     </p>
   </div>
   <a class="hero-full__scroll" href="#unternehmer" aria-label="Scroll">
@@ -3253,7 +3267,7 @@
   </a>
   <p class="photo-credit">
     <span class="de">Bild: Planet Sommerparty 2026</span>
-    <span class="en">Image: Planet Summer Party 2026</span>
+    <span class="en">Photo: Planet summer party 2026</span>
   </p>
 </section>
 
@@ -3264,7 +3278,7 @@
       <div>
         <h2>
           <span class="de">Du willst wachsen. Und dann kommt der Alltag.</span>
-          <span class="en">You want to grow. Then the day-to-day happens.</span>
+          <span class="en">You want to scale. But the daily grind gets in the way.</span>
         </h2>
       </div>
     </div>
@@ -3273,46 +3287,46 @@
         <div class="fit__cue" aria-hidden="true"><span class="fit__rule"></span></div>
         <p class="fit__text">
           <span class="de">jede neue Aufgabe landet wieder bei dir, weil es sonst niemand kann.</span>
-          <span class="en">every new task lands back on your desk, because nobody else can do it.</span>
+          <span class="en">Every new task ends up on your desk because no one else can handle it.</span>
         </p>
       </li>
       <li class="fit__item reveal">
         <div class="fit__cue" aria-hidden="true"><span class="fit__rule"></span></div>
         <p class="fit__text">
           <span class="de">Wachstum heißt mehr Chaos, und du löschst Feuer, statt zu bauen.</span>
-          <span class="en">growth means more chaos, and you’re fighting fires instead of building.</span>
+          <span class="en">More growth just means more chaos. You're stuck putting out fires instead of actually building the business.</span>
         </p>
       </li>
       <li class="fit__item reveal">
         <div class="fit__cue" aria-hidden="true"><span class="fit__rule"></span></div>
         <p class="fit__text">
           <span class="de">du weißt, dass du Leute brauchst — nur nicht, wann und welche.</span>
-          <span class="en">you know you need people — you just don’t know when, or which.</span>
+          <span class="en">You know you need to hire—you just don't know who or when.</span>
         </p>
       </li>
       <li class="fit__item reveal">
         <div class="fit__cue" aria-hidden="true"><span class="fit__rule"></span></div>
         <p class="fit__text">
           <span class="de">der Markt ist da, aber du kommst nicht an die Zielgruppe.</span>
-          <span class="en">the market is there, but you can’t reach your audience.</span>
+          <span class="en">The market is there, but you just can't seem to reach your audience.</span>
         </p>
       </li>
       <li class="fit__item reveal">
         <div class="fit__cue" aria-hidden="true"><span class="fit__rule"></span></div>
         <p class="fit__text">
           <span class="de">du müsstest investieren — und dein Geld steckt im Unternehmen.</span>
-          <span class="en">you’d need to invest — and your money is tied up in the business.</span>
+          <span class="en">You need to invest, but all your cash is tied up in the company.</span>
         </p>
       </li>
     </ul>
     <p class="stance-lines__close reveal">
       <span class="de">Deswegen bist du nicht Unternehmer geworden. Trotzdem kostet es dich die meiste Zeit.</span>
-      <span class="en">That’s not why you became an entrepreneur. It still takes up most of your time.</span>
+      <span class="en">This isn't why you became an entrepreneur. Yet it's eating up all your time.</span>
     </p>
   </div>
 </section>
 
-<!-- HEBEL — Blau-Band, Muster #varianten. Kreis ohne Foto: keines vorgegeben. -->
+<!-- HEBEL — Blau-Band, Muster #varianten -->
 <div data-band-blue>
 <section class="stance" id="hebel">
   <div class="container">
@@ -3320,7 +3334,7 @@
       <div>
         <h2>
           <span class="de">Mach was du willst — wir machen den Rest.</span>
-          <span class="en">Do what you want. We’ll handle the rest.</span>
+          <span class="en">Do what you do best. We'll handle the rest.</span>
         </h2>
       </div>
     </div>
@@ -3328,17 +3342,17 @@
       <div class="stance__media reveal-scale">
         <div class="pillar-orbit">
           <div class="pillar-orbit__media">
-            <div class="pillar-circle-img" style="background: #c4c4c0;" role="img" aria-label=""></div>
+            <div class="pillar-circle-img" style="background-image: url('assets/images/mach_was_du-willst.jpg');" role="img" aria-label=""></div>
           </div>
           <svg class="pillar-orbit__caption" viewBox="0 0 100 100" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
             <defs>
               <path id="orbit-hebel" fill="none" d="M50,50 m-47,0 a47,47 0 1,1 94,0 a47,47 0 1,1 -94,0"/>
             </defs>
             <text class="de">
-              <textPath href="#orbit-hebel" xlink:href="#orbit-hebel" startOffset="8%">Bildunterschrift</textPath>
+              <textPath href="#orbit-hebel" xlink:href="#orbit-hebel" startOffset="8%">Bild: Planet Sommerparty 2026</textPath>
             </text>
             <text class="en">
-              <textPath href="#orbit-hebel" xlink:href="#orbit-hebel" startOffset="8%">Caption</textPath>
+              <textPath href="#orbit-hebel" xlink:href="#orbit-hebel" startOffset="8%">Photo: Planet summer party 2026</textPath>
             </text>
           </svg>
         </div>
@@ -3346,11 +3360,11 @@
       <div class="stance__body flow reveal-slide-right">
         <p>
           <span class="de">Du musst niemanden einstellen, keine Agentur briefen und kein System neu aufsetzen. Als Teil der Planet Group dockst du an Abteilungen an, die es längst gibt — Vertrieb, Logistik, Controlling, IT, Recruiting. Du entscheidest, was du abgibst. Alles andere bleibt deins.</span>
-          <span class="en">You don’t need to hire anyone, brief an agency or set up a new system. As part of Planet Group you plug into departments that already exist — sales, logistics, controlling, IT, recruiting. You decide what you hand over. Everything else stays yours.</span>
+          <span class="en">You don’t have to hire anyone, brief an agency or set up new systems. As part of Planet Group you plug into departments that already exist: sales, logistics, controlling, IT and recruiting. You decide what to hand over. Everything else stays yours, exactly as it is.</span>
         </p>
         <p>
           <span class="de">Du willst neue Märkte? Dann mach Märkte. Du willst Produkte entwickeln? Dann entwickle Produkte. Alles andere kann bei uns liegen. Du gibst nichts auf. Du bekommst dazu.</span>
-          <span class="en">You want new markets? Then do markets. You want to develop products? Then develop products. Everything else can sit with us. You’re not giving anything up. You’re gaining.</span>
+          <span class="en">Want new markets? Go open them. Want to develop products? Do that. Everything else can sit with us. You don’t give anything up. You get more.</span>
         </p>
       </div>
     </div>
@@ -3371,7 +3385,7 @@
     </div>
     <p class="stack__intro reveal">
       <span class="de">Supply Chain, IT, Logistik, Controlling, HR — das wächst mit, ob du willst oder nicht. Als Teil der Planet Group dockst du an eine Infrastruktur an, die das schon für vier Marken macht. Modular: Du nutzt, was dir fehlt. Was du gut kannst, bleibt bei dir.</span>
-      <span class="en">Supply chain, IT, logistics, controlling, HR — all of that grows whether you want it to or not. As part of Planet Group you plug into infrastructure that already does it for four brands. Modular: you use what you lack. What you’re good at stays with you.</span>
+      <span class="en">Supply chain, IT, logistics, controlling, HR: all of it grows with you, whether you want it to or not. As part of Planet Group you connect to an infrastructure that already does this for four brands. It’s modular, so you use what you’re missing and keep what you’re already good at.</span>
     </p>
     <div class="stack__grid">
       <article class="stack__item flow reveal">
@@ -3379,7 +3393,7 @@
         <h3><span class="de">Branding</span><span class="en">Branding</span></h3>
         <p>
           <span class="de">Dein Produkt ist gut. Nur sieht man das noch nicht. Positionierung, Kampagnen, Assets — wir machen die Marke scharf, ohne dich zum Agentur-Kunden zu machen. Von Naming bis Launch, mit Leuten die Tiergesundheit verstehen.</span>
-          <span class="en">Your product is good. It just doesn’t look like it yet. Positioning, campaigns, assets — we make the brand sharp without turning you into an agency client. From naming to launch, with people who know animal health.</span>
+          <span class="en">Your product is good. People just can’t see it yet. Positioning, campaigns and assets: we sharpen the brand without turning you into an agency client, from naming to launch, with people who understand animal health.</span>
         </p>
       </article>
       <article class="stack__item flow reveal">
@@ -3387,7 +3401,7 @@
         <h3><span class="de">Vertrieb</span><span class="en">Sales</span></h3>
         <p>
           <span class="de">Du weißt, wo deine Kunden sitzen. Du kommst nur nicht rein. Tierarzt-Außendienst und D2C — zwei Kanäle, ein System. Wir bringen Produkte in Praxen und direkt zu Tierhaltern, mit Strukturen die skalieren.</span>
-          <span class="en">You know where your customers are. You just can’t get in. A vet field force and D2C — two channels, one system. We get product into clinics and straight to pet owners, on a setup that can scale.</span>
+          <span class="en">You know where your customers are. You just can’t get in. Vet field sales and direct-to-consumer, two channels on one system: we get products into practices and directly to pet owners, with a structure that scales.</span>
         </p>
       </article>
       <article class="stack__item flow reveal">
@@ -3395,23 +3409,23 @@
         <h3><span class="de">Marketing</span><span class="en">Marketing</span></h3>
         <p>
           <span class="de">Du testest, wenn Zeit ist. Also selten. Reichweite, die messbar ist. Campaigns, Content, Community — wir testen, lernen und skalieren, was wirkt. Weniger Bauchgefühl, mehr Loop.</span>
-          <span class="en">You test when there’s time. So, rarely. Reach you can measure. Campaigns, content, community — we test, learn, and scale what works. Less gut feel. More of a loop.</span>
+          <span class="en">You test when there’s time, which means rarely. We run campaigns, content and community with one aim: reach you can measure. We test, learn and scale what works, with less gut feeling and more feedback.</span>
         </p>
       </article>
       <article class="stack__item flow reveal">
         <span class="material-symbols-outlined icon--lg stack__icon" aria-hidden="true">inventory_2</span>
-        <h3><span class="de">Logistik</span><span class="en">Logistics</span></h3>
+        <h3><span class="de">Logistik</span><span class="en">Shipping</span></h3>
         <p>
           <span class="de">Mehr Bestellungen sind gut. Bis dein Lager nicht mehr mitkommt. Vom Wareneingang bis zur Praxis-Tür. Lager, Kommissionierung, Versand — damit dein Produkt ankommt, bevor jemand nachfragt.</span>
-          <span class="en">More orders are good. Until your warehouse can’t keep up. From the warehouse door to the clinic. Storage, picking, shipping — so the product arrives before anyone has to chase it.</span>
+          <span class="en">More orders are good, right up until your warehouse can’t keep up. From goods-in to the practice door we handle storage, picking and dispatch, so your product arrives before anyone has to ask for it.</span>
         </p>
       </article>
       <article class="stack__item flow reveal">
         <span class="material-symbols-outlined icon--lg stack__icon" aria-hidden="true">factory</span>
-        <h3><span class="de">Supply Chain</span><span class="en">Supply Chain</span></h3>
+        <h3><span class="de">Supply Chain</span><span class="en">Supply chain</span></h3>
         <p>
           <span class="de">Ein Lieferant springt ab — und deine Skalierung steht. Lieferanten, Rohstoffe, Verfügbarkeit. Wir sichern deine Kette ab und verhandeln Konditionen, die du allein nicht bekommst — damit nie ein Produkt fehlt, wenn die Nachfrage da ist.</span>
-          <span class="en">One supplier drops out — and your scaling stops. Suppliers, raw materials, availability. We lock in the chain and negotiate terms you wouldn’t get on your own — so you aren’t out of stock when demand shows up.</span>
+          <span class="en">One supplier drops out and your growth stalls. Suppliers, raw materials, availability: we secure your chain and negotiate terms you wouldn’t get on your own, so you never run short when the demand is there.</span>
         </p>
       </article>
       <article class="stack__item flow reveal">
@@ -3419,7 +3433,7 @@
         <h3><span class="de">Controlling</span><span class="en">Controlling</span></h3>
         <p>
           <span class="de">Du spürst, dass es läuft. Belegen kannst du es nicht. Zahlen, die du steuern kannst. Reporting, Forecasts, Kennzahlen — damit du entscheidest, statt nachzurechnen.</span>
-          <span class="en">You can feel it’s working. You just can’t prove it. Numbers you can actually steer with. Reporting, forecasts, KPIs — so you make the call, instead of catching up on the books.</span>
+          <span class="en">You can feel it’s working, but you can’t prove it. Reporting, forecasts and KPIs give you numbers you can steer by, so you decide instead of recalculating.</span>
         </p>
       </article>
       <article class="stack__item flow reveal">
@@ -3427,15 +3441,15 @@
         <h3><span class="de">Finance</span><span class="en">Finance</span></h3>
         <p>
           <span class="de">Für den nächsten Schritt brauchst du Kapital. Nur nicht um jeden Preis. Kapital, Bewertung, Deals. Wenn Wachstum Finanzierung braucht oder eine Übernahme ansteht — wir kennen beides von innen.</span>
-          <span class="en">The next step needs capital. Just not at any price. Capital, valuation, deals. When growth needs financing, or an acquisition is on the table — we’ve been on both sides of that.</span>
+          <span class="en">Your next step needs capital, but not at any price. Capital, valuation, deals: whether growth needs financing or an acquisition is on the table, we’ve seen both from the inside.</span>
         </p>
       </article>
       <article class="stack__item flow reveal">
         <span class="material-symbols-outlined icon--lg stack__icon" aria-hidden="true">dns</span>
-        <h3><span class="de">IT Systeme</span><span class="en">IT Systems</span></h3>
+        <h3><span class="de">IT Systeme</span><span class="en">IT systems</span></h3>
         <p>
           <span class="de">Deine Systeme sind mitgewachsen. Nur nicht miteinander. Tools, die zusammenarbeiten. ERP, CRM, Shops, Integrationen — weniger Flickwerk, mehr Betriebssystem für dein Unternehmen.</span>
-          <span class="en">Your systems grew with you. Just not with each other. Tools that work together. ERP, CRM, shops, integrations — less patchwork, more of an operating system for the company.</span>
+          <span class="en">Your systems grew with the company, just not with each other. ERP, CRM, shops and integrations become tools that work together: less patchwork, more of an operating system for your business.</span>
         </p>
       </article>
       <article class="stack__item flow reveal">
@@ -3443,7 +3457,7 @@
         <h3><span class="de">Recruiting</span><span class="en">Recruiting</span></h3>
         <p>
           <span class="de">Du brauchst Leute, bevor du sie dir leisten kannst. Die richtigen Leute finden und halten. Recruiting, Onboarding, Prozesse — damit dein Team wächst, ohne dass HR dein Fulltime-Job wird.</span>
-          <span class="en">You need people before you can afford them. Find the right people and keep them. Recruiting, onboarding, process — so the team can grow without HR becoming your full-time job.</span>
+          <span class="en">You need people before you can afford them. Recruiting, onboarding and processes to find the right ones and keep them, so your team grows without HR becoming your full-time job.</span>
         </p>
       </article>
       <article class="stack__item flow reveal">
@@ -3451,47 +3465,47 @@
         <h3><span class="de">HR</span><span class="en">HR</span></h3>
         <p>
           <span class="de">Dein Team wächst — und mit ihm alles, was keinen Umsatz bringt. Verträge, Zeiterfassung, Krankheit, Dienstpläne, Gespräche. Der Teil der Führung, der Kraft kostet und keinen Umsatz bringt — läuft bei uns, damit du ihn nicht mehr tragen musst.</span>
-          <span class="en">Your team is growing — and with it everything that doesn’t bring in revenue. Contracts, time tracking, sick leave, rosters, the hard conversations. The part of leading people that drains you and earns nothing — we run it, so you don’t have to carry it.</span>
+          <span class="en">Your team grows, and so does everything that doesn’t bring in revenue: contracts, time tracking, sick leave, rotas and hard conversations. It’s the part of leadership that costs energy and earns nothing. We take it on, so you don’t have to.</span>
         </p>
       </article>
       <article class="stack__item flow reveal">
         <span class="material-symbols-outlined icon--lg stack__icon" aria-hidden="true">verified</span>
-        <h3><span class="de">QM</span><span class="en">Quality</span></h3>
+        <h3><span class="de">QM</span><span class="en">QA</span></h3>
         <p>
           <span class="de">Mehr Stückzahl heißt mehr Kontrolle. Nicht weniger. Prozesse, die halten. Audits, Chargendoku, Reklamationen — damit Qualität nicht vom Zufall abhängt, wenn die Stückzahl steigt.</span>
-          <span class="en">Higher volume means more control. Not less. Process that holds. Audits, batch records, complaints — so quality doesn’t become luck when volume goes up.</span>
+          <span class="en">More volume calls for more control, not less. Audits, batch documentation and complaints run on processes that hold, so quality doesn’t come down to luck as the numbers rise.</span>
         </p>
       </article>
       <article class="stack__item flow reveal">
         <span class="material-symbols-outlined icon--lg stack__icon" aria-hidden="true">auto_awesome</span>
-        <h3><span class="de">K.I.</span><span class="en">AI</span></h3>
+        <h3><span class="de">K.I.</span><span class="en">A.I.</span></h3>
         <p>
           <span class="de">KI soll man jetzt machen, sagen alle. Nur wer — und wofür? Automatisieren, wo es Sinn ergibt. Text, Daten, interne Abläufe — KI als Werkzeug, nicht als Show. Damit dein Team an dem arbeitet, was nur Menschen können.</span>
-          <span class="en">Everyone says you should be doing AI now. But who — and what for? Automate where it actually helps. Copy, data, internal work — AI as a tool, not a show. So the team spends time on what only people can do.</span>
+          <span class="en">Everyone says you should be doing AI now. Nobody says who, or what for. We automate where it actually helps — text, data, internal workflows — and treat AI as a tool, not a gimmick, so your team can work on what only people can do.</span>
         </p>
       </article>
       <article class="stack__item flow reveal">
         <span class="material-symbols-outlined icon--lg stack__icon" aria-hidden="true">precision_manufacturing</span>
-        <h3><span class="de">Produktion und Verpackung</span><span class="en">Production &amp; packaging</span></h3>
+        <h3><span class="de">Produktion</span><span class="en">Production</span></h3>
         <p>
           <span class="de">Deine nächste Charge ist größer als deine Linie. Abfüllung, Konfektionierung, Packmittel. Wir bringen dein Produkt in eine Form, die Praxen und Lager verstehen — ohne dass du eine eigene Linie bauen musst.</span>
-          <span class="en">Your next batch is bigger than your line. Filling, packing, packaging. We get the product into a format clinics and warehouses actually work with — without you having to build a line.</span>
+          <span class="en">Your next batch is bigger than your line. Filling, assembly and packaging materials: we get your product into a form that practices and warehouses understand, without you having to build a line of your own.</span>
         </p>
       </article>
       <article class="stack__item flow reveal">
         <span class="material-symbols-outlined icon--lg stack__icon" aria-hidden="true">policy</span>
-        <h3><span class="de">Regulatory Affairs</span><span class="en">Regulatory Affairs</span></h3>
+        <h3><span class="de">Regulatory Affairs</span><span class="en">Regulatory affairs</span></h3>
         <p>
           <span class="de">Ein neuer Markt heißt neue Regeln. Und die stehen nirgends zusammen. Zulassung, Kennzeichnung, Vigilanz. Wir kennen die Regeln in der Tiergesundheit — damit dein Produkt darf, was es verspricht.</span>
-          <span class="en">A new market means new rules. And they’re never in one place. Registration, labelling, vigilance. We know the rules in animal health — so the product is allowed to do what it claims.</span>
+          <span class="en">A new market means new rules, and they’re never written down in one place. Registration, labelling and vigilance: we know the animal-health rules, so your product is cleared to do what it promises.</span>
         </p>
       </article>
       <article class="stack__item flow reveal">
         <span class="material-symbols-outlined icon--lg stack__icon" aria-hidden="true">account_tree</span>
-        <h3><span class="de">Project Management</span><span class="en">Project Management</span></h3>
+        <h3><span class="de">Project Management</span><span class="en">Project management</span></h3>
         <p>
           <span class="de">Zehn Baustellen, ein Kopf: deiner. Viele Baustellen, ein Takt. Launch, Integration, Umbau — wir halten Termine und Abhängigkeiten, damit nichts zwischen den Stühlen liegt.</span>
-          <span class="en">Ten building sites, one head: yours. A lot of moving pieces, one tempo. Launch, integration, rebuild — we keep dates and dependencies in line, so nothing falls between the cracks.</span>
+          <span class="en">Ten projects, one head: yours. Launches, integrations and rebuilds on one timeline — we keep deadlines and dependencies straight, so nothing falls through the cracks.</span>
         </p>
       </article>
     </div>
@@ -3506,7 +3520,7 @@
       <div>
         <h2>
           <span class="de">Du bestimmst, wie weit du gehst.</span>
-          <span class="en">You decide how far you go.</span>
+          <span class="en">You decide how far this goes.</span>
         </h2>
       </div>
     </div>
@@ -3517,12 +3531,12 @@
             <span class="fit__index">01</span>
             <span class="fit__rule"></span>
           </div>
-          <h2><span class="de">Teile abgeben</span><span class="en">Hand over parts</span></h2>
+          <h2><span class="de">Teile abgeben</span><span class="en">Hand over part</span></h2>
         </div>
         <div class="paths__body flow">
           <p>
             <span class="de">Teilverkauf: Du gibst einen Teil ab und führst dein Unternehmen als Teil der Gruppe weiter. Was dich operativ auffrisst, kann bei uns liegen.</span>
-            <span class="en">Partial sale: you hand over a share and keep running your company as part of the group. What’s eating you operationally can sit with us.</span>
+            <span class="en">A partial sale: you sell a share and keep running your company as part of the group. The operational grind can move over to us.</span>
           </p>
         </div>
       </article>
@@ -3532,12 +3546,12 @@
             <span class="fit__index">02</span>
             <span class="fit__rule"></span>
           </div>
-          <h2><span class="de">Beteiligt bleiben</span><span class="en">Stay invested</span></h2>
+          <h2><span class="de">Beteiligt bleiben</span><span class="en">Keep a stake</span></h2>
         </div>
         <div class="paths__body flow">
           <p>
             <span class="de">Rückbeteiligung: Du bleibst beteiligt und wächst mit der Gruppe. Die Details gehören ins Gespräch, nicht auf eine Webseite.</span>
-            <span class="en">Reinvestment: you stay invested and grow with the group. The details belong in a conversation, not on a website.</span>
+            <span class="en">A roll-over: you stay invested and grow along with the group. The details belong in a conversation, not on a website.</span>
           </p>
         </div>
       </article>
@@ -3552,7 +3566,7 @@
         <div class="paths__body flow">
           <p>
             <span class="de">Noch keine Entscheidung. Ein Gespräch reicht, um zu sehen, ob die Richtung stimmt — bevor irgendetwas formal wird.</span>
-            <span class="en">No decision yet. One conversation is enough to see whether the direction fits — before anything becomes formal.</span>
+            <span class="en">No decision needed. One conversation is enough to see whether we’re heading the same way, long before anything gets formal.</span>
           </p>
         </div>
       </article>
@@ -3562,17 +3576,17 @@
             <span class="fit__index">04</span>
             <span class="fit__rule"></span>
           </div>
-          <h2><span class="de">Oder doch verkaufen</span><span class="en">Or sell after all</span></h2>
+          <h2><span class="de">Oder doch verkaufen</span><span class="en">Or just sell</span></h2>
         </div>
         <div class="paths__body flow">
           <p>
             <span class="de">Vielleicht merkst du beim Lesen, dass es dir weniger ums Wachsen geht als ums Übergeben. Auch dafür gibt es bei uns einen Weg.</span>
-            <span class="en">Maybe while reading you realise this is less about growing than about handing over. There’s a path for that with us too.</span>
+            <span class="en">Reading this, you might realize you care less about growing and more about handing the company over. There’s a path for that with us too.</span>
           </p>
           <p>
             <a href="planet-website-nachfolge.html">
               <span class="de">Zur Unternehmensnachfolge</span>
-              <span class="en">To business succession</span>
+              <span class="en">See the succession page</span>
               <span class="material-symbols-outlined" aria-hidden="true">arrow_outward</span>
             </a>
           </p>
@@ -3592,34 +3606,34 @@
         <div class="fit__cue" aria-hidden="true"><span class="fit__rule"></span></div>
         <p class="fit__text">
           <span class="de">Weiter Verantwortung übernehmen?</span>
-          <span class="en">Stay in charge?</span>
+          <span class="en">Keep running the business?</span>
         </p>
       </li>
       <li class="fit__item reveal">
         <div class="fit__cue" aria-hidden="true"><span class="fit__rule"></span></div>
         <p class="fit__text">
           <span class="de">Als Berater begleiten?</span>
-          <span class="en">Stay on as advisor?</span>
+          <span class="en">Stay on as an adviser?</span>
         </p>
       </li>
       <li class="fit__item reveal">
         <div class="fit__cue" aria-hidden="true"><span class="fit__rule"></span></div>
         <p class="fit__text">
           <span class="de">Gesellschafter bleiben?</span>
-          <span class="en">Stay a shareholder?</span>
+          <span class="en">Remain a shareholder?</span>
         </p>
       </li>
       <li class="fit__item reveal">
         <div class="fit__cue" aria-hidden="true"><span class="fit__rule"></span></div>
         <p class="fit__text">
           <span class="de">Mit der Gruppe weiterwachsen?</span>
-          <span class="en">Keep growing with the group?</span>
+          <span class="en">Grow along with the group?</span>
         </p>
       </li>
     </ul>
     <p class="fit__payoff reveal">
       <span class="de">Dein Unternehmen wächst, ohne dass du alles selbst machst. Und du bleibst der, der es aufgebaut hat.</span>
-      <span class="en">The company grows without you doing all of it yourself. And you stay the person who built it.</span>
+      <span class="en">Your company grows without you doing everything yourself. And you’re still the one who built it.</span>
     </p>
   </div>
 </section>
@@ -3632,34 +3646,34 @@
       <div>
         <h2>
           <span class="de">Allein kommst du auch an. Nur später.</span>
-          <span class="en">You’ll get there alone too. Just later.</span>
+          <span class="en">You’d get there alone. Just later.</span>
         </h2>
       </div>
     </div>
     <p class="fit__intro reveal">
       <span class="de">Du könntest all das selbst aufbauen — Vertrieb, Struktur, Reichweite. Die Frage ist nur, wie viele Jahre du dafür einrechnest, und was in dieser Zeit der Wettbewerb macht. Wir haben diese Strecke viermal gebaut. Du musst sie nicht ein fünftes Mal allein gehen.</span>
-      <span class="en">You could build all of it yourself — sales, structure, reach. The only question is how many years you’re budgeting for it, and what the competition does in the meantime. We’ve built that stretch four times. You don’t have to walk it alone a fifth time.</span>
+      <span class="en">You could build all of this yourself: sales, structure, reach. The only question is how many years you budget for it, and what your competitors do in the meantime. We’ve built this road four times. You don’t have to walk it a fifth time on your own.</span>
     </p>
     <ul class="fit__list">
       <li class="fit__item reveal">
         <div class="fit__cue" aria-hidden="true"><span class="fit__rule"></span></div>
         <p class="fit__text">
           <span class="de">Zugang, für den du sonst Jahre brauchst. Außendienst in Tierarztpraxen, D2C-Kanäle, Partner in mehreren Märkten.</span>
-          <span class="en">Access that would otherwise take you years. Field sales in vet practices, D2C channels, partners in several markets.</span>
+          <span class="en">Access that would otherwise take you years: field sales in vet practices, direct-to-consumer channels, partners in several markets.</span>
         </p>
       </li>
       <li class="fit__item reveal">
         <div class="fit__cue" aria-hidden="true"><span class="fit__rule"></span></div>
         <p class="fit__text">
           <span class="de">Kapital ohne Exit-Uhr. Investitionen dürfen sich über Jahre rechnen, nicht über eine Fondslaufzeit.</span>
-          <span class="en">Capital without an exit clock. Investments can pay off over years, not over a fund’s lifetime.</span>
+          <span class="en">Capital with no exit clock. Investments can pay off over years, not on a fund’s timetable.</span>
         </p>
       </li>
       <li class="fit__item reveal">
         <div class="fit__cue" aria-hidden="true"><span class="fit__rule"></span></div>
         <p class="fit__text">
           <span class="de">Vier Marken Erfahrung — auch mit dem, was nicht funktioniert hat. Du musst dieselben Fehler nicht noch einmal bezahlen.</span>
-          <span class="en">Four brands’ worth of experience — including what didn’t work. You don’t have to pay for the same mistakes twice.</span>
+          <span class="en">The experience of four brands, including what didn’t work. You don’t have to pay for the same mistakes twice.</span>
         </p>
       </li>
     </ul>
@@ -3674,7 +3688,7 @@
       <div>
         <h2>
           <span class="de">Kein Fonds. Keine Bank. Unternehmer – genau wie du.</span>
-          <span class="en">Not a fund. Not a bank. Entrepreneurs — like you.</span>
+          <span class="en">No fund. No bank. Owners, just like you.</span>
         </h2>
       </div>
     </div>
@@ -3682,15 +3696,15 @@
       <div class="stance__body flow reveal-slide-left">
         <p>
           <span class="de">Wenn du mit uns sprichst, sitzt dir deshalb kein Private-Equity-Fonds gegenüber und keine Bank — sondern Unternehmer, denen die Gruppe zu 100&nbsp;% selbst gehört. Niemand, der dein Unternehmen nach acht Jahren weiterverkaufen muss. Niemand, der nur deine Zahlen sieht und nicht die Tiere dahinter.</span>
-          <span class="en">When you sit down with us, there is no PE fund across the table. No bank. Founders who own the group, 100%. Nobody who has to sell your company after eight years. Nobody who only sees the numbers and misses the animals.</span>
+          <span class="en">When you talk to us, there’s no private equity fund across the table and no bank. You’re talking to entrepreneurs who own 100% of the group themselves. Nobody has to sell your company on after eight years, and nobody looks only at your numbers without seeing the animals behind them.</span>
         </p>
         <p>
           <span class="de">Und ja: Geld verdienen wollen wir trotzdem — wie du auch. Wir spielen mit offenen Karten. Das kannst du von uns erwarten.</span>
-          <span class="en">And yes — we want to make money. Same as you. We’ll put that on the table. You can hold us to it.</span>
+          <span class="en">And yes, we want to make money too, the same as you do. We put our cards on the table, and you can expect that from us.</span>
         </p>
         <p>
           <span class="de">Was du aufgebaut hast, verdient mehr als eine Exit-Frist. Du brauchst keinen Investor. Du brauchst Unternehmer, die weiterbauen statt weiterverkaufen.</span>
-          <span class="en">What you’ve built deserves more than an exit deadline. You don’t need an investor. You need entrepreneurs who keep building instead of selling on.</span>
+          <span class="en">What you’ve built deserves more than an exit deadline. You don’t need an investor. You need fellow owners who would rather keep building than sell on.</span>
         </p>
       </div>
       <div class="stance__media reveal-scale">
@@ -3702,8 +3716,11 @@
             <defs>
               <path id="orbit-haltung" fill="none" d="M50,50 m-47,0 a47,47 0 1,1 94,0 a47,47 0 1,1 -94,0"/>
             </defs>
-            <text>
+            <text class="de">
               <textPath href="#orbit-haltung" xlink:href="#orbit-haltung" startOffset="8%">Bild: Planet Sommerparty 2026</textPath>
+            </text>
+            <text class="en">
+              <textPath href="#orbit-haltung" xlink:href="#orbit-haltung" startOffset="8%">Photo: Planet summer party 2026</textPath>
             </text>
           </svg>
         </div>
@@ -3727,12 +3744,12 @@
     </blockquote>
     <footer class="quote-type__who">
       <span class="de">aus unseren <a class="fit__mark" href="#grundsaetze">Unternehmensgrundsätzen<span class="material-symbols-outlined fit__mark-arrow" aria-hidden="true">arrow_outward</span></a></span>
-      <span class="en">from our <a class="fit__mark" href="#grundsaetze">principles<span class="material-symbols-outlined fit__mark-arrow" aria-hidden="true">arrow_outward</span></a></span>
+      <span class="en">taken from our <a class="fit__mark" href="#grundsaetze">company principles<span class="material-symbols-outlined fit__mark-arrow" aria-hidden="true">arrow_outward</span></a></span>
     </footer>
   </div>
   <p class="photo-credit">
     <span class="de">Bild: Planet Sommerparty 2026</span>
-    <span class="en">Image: Planet Summer Party 2026</span>
+    <span class="en">Photo: Planet summer party 2026</span>
   </p>
 </section>
 
@@ -3742,7 +3759,7 @@
       <div>
         <h2>
           <span class="de">Du wirst Teil einer <a class="fit__mark" href="#unternehmensziel">Mission<span class="material-symbols-outlined fit__mark-arrow" aria-hidden="true">arrow_outward</span></a></span>
-          <span class="en">You join a <a class="fit__mark" href="#unternehmensziel">mission<span class="material-symbols-outlined fit__mark-arrow" aria-hidden="true">arrow_outward</span></a></span>
+          <span class="en">You’re joining a <a class="fit__mark" href="#unternehmensziel">mission<span class="material-symbols-outlined fit__mark-arrow" aria-hidden="true">arrow_outward</span></a></span>
         </h2>
       </div>
     </div>
@@ -3750,11 +3767,11 @@
       <div class="mission__body flow reveal-slide-left">
         <p>
           <span class="de">Gemeinsam verbessern wir das Leben von Tieren — mit starken Marken, innovativen Produkten und echtem Engagement. Wir bauen Unternehmen nicht nur für den Erfolg, sondern für eine <a class="fit__mark" href="#unternehmensziel">Mission<span class="material-symbols-outlined fit__mark-arrow" aria-hidden="true">arrow_outward</span></a>.</span>
-          <span class="en">We make animals’ lives better — with strong brands, products that work, and real commitment. We don’t build companies just to win. We build them for a <a class="fit__mark" href="#unternehmensziel">mission<span class="material-symbols-outlined fit__mark-arrow" aria-hidden="true">arrow_outward</span></a>.</span>
+          <span class="en">Together we improve the lives of animals — with strong brands, innovative products, and real commitment. We don’t build companies only for success. We build them for a <a class="fit__mark" href="#unternehmensziel">mission<span class="material-symbols-outlined fit__mark-arrow" aria-hidden="true">arrow_outward</span></a>.</span>
         </p>
         <p>
           <span class="de">Unser Unternehmensziel heißt Glück. Wir glauben, dass erfolgreiche Unternehmen bei glücklichen Menschen beginnen. Deshalb fördern wir nicht nur Unternehmenswachstum, sondern auch persönliches Wachstum — Unternehmer lernen bei uns voneinander.</span>
-          <span class="en">Our goal as a company is happiness. We believe good companies start with happy people. So we don’t just grow the business — we grow the people who run it. Founders learn from each other here.</span>
+          <span class="en">Our company goal is happiness. We believe successful companies start with happy people. So we back personal growth as well as business growth — the founders here learn from each other.</span>
         </p>
       </div>
       <div class="stance__media reveal-scale">
@@ -3766,8 +3783,11 @@
             <defs>
               <path id="orbit-mission" fill="none" d="M50,50 m-47,0 a47,47 0 1,1 94,0 a47,47 0 1,1 -94,0"/>
             </defs>
-            <text>
+            <text class="de">
               <textPath href="#orbit-mission" xlink:href="#orbit-mission" startOffset="8%">Bild: Planet Sommerparty 2026</textPath>
+            </text>
+            <text class="en">
+              <textPath href="#orbit-mission" xlink:href="#orbit-mission" startOffset="8%">Photo: Planet summer party 2026</textPath>
             </text>
           </svg>
         </div>
@@ -3786,7 +3806,7 @@
       <div>
         <h2>
           <span class="de">Das haben wir schon mal gemacht.</span>
-          <span class="en">We’ve done this before.</span>
+          <span class="en">We’ve done this a few times.</span>
         </h2>
       </div>
     </div>
@@ -3822,7 +3842,7 @@
           <div class="brands__body">
             <p class="brands__copy">
               <span class="de">der Ursprung: heute ein global agierendes Unternehmen für Tiergesundheit, seit 2011, aus eigener Kraft, ohne Fremdkapital von Investoren.</span>
-              <span class="en">Where it started: a global animal-health company, since 2011, built without outside investors.</span>
+              <span class="en">where it started: a global animal health company today, built since 2011 on its own, with no outside capital from investors.</span>
             </p>
             <a class="brands__link" href="https://inuvet.com" target="_blank" rel="noopener">
               inuvet.com
@@ -3844,17 +3864,17 @@
       <blockquote class="quote-scroll__quote">
         <p class="quote-scroll__text">
           <span class="de">»Wir wachsen, ohne uns zu verbiegen.«</span>
-          <span class="en">»We grow without losing who we are.«</span>
+          <span class="en">»We grow without bending who we are.«</span>
         </p>
       </blockquote>
       <footer class="quote-scroll__who">
         <strong>Johanna</strong>
-        <span><span class="de">Geschäftsführerin von Inuvet</span><span class="en">Managing Director of Inuvet</span></span>
+        <span><span class="de">Geschäftsführerin von Inuvet</span><span class="en">Managing Director, Inuvet</span></span>
       </footer>
     </div>
     <p class="photo-credit">
       <span class="de">Bild: Planet Sommerparty 2026</span>
-      <span class="en">Image: Planet Summer Party 2026</span>
+      <span class="en">Photo: Planet summer party 2026</span>
     </p>
   </section>
 
@@ -3878,7 +3898,7 @@
           <div class="brands__body">
             <p class="brands__copy">
               <span class="de">natürliche Ergänzungsfuttermittel für Pferde, in Tierarztqualität: entwickelt mit Tierärzten, Biologen und Pharmazeuten, empfohlen von Tierärzten und Weltklasse-Reitern.</span>
-              <span class="en">natural horse supplements at vet standard, developed with vets, biologists and pharmacists — recommended by vets and world-class riders.</span>
+              <span class="en">natural, vet-quality supplements for horses: developed with vets, biologists and pharmacists, and recommended by vets and world-class riders.</span>
             </p>
             <a class="brands__link" href="https://eqx.vet" target="_blank" rel="noopener">
               eqx.vet
@@ -3926,7 +3946,7 @@
           <div class="brands__body">
             <p class="brands__copy">
               <span class="de">Wundversorgung für Menschen: in Apotheken erhältlich, von Arztpraxen empfohlen. Der Beweis, dass unsere Kompetenz aus der Tiergesundheit auch im Humanbereich trägt.</span>
-              <span class="en">Wound care for people, sold in pharmacies, recommended by doctors. Proof that what we know from animal health also holds for humans.</span>
+              <span class="en">wound care for people, sold in pharmacies and recommended by doctors’ practices. It shows that what we know from animal health holds up in human health too.</span>
             </p>
             <a class="brands__link" href="https://manukalind.com" target="_blank" rel="noopener">
               ManukaLind.com
@@ -3971,7 +3991,7 @@
           <div class="brands__body">
             <p class="brands__copy">
               <span class="de">die natürliche Tierapotheke für Hunde, von Tierärzten entwickelt: pflanzlich, hochdosiert, ohne unnötige Zusätze — für Magen, Darm, Gelenke, Haut und Wohlbefinden.</span>
-              <span class="en">a natural pharmacy for dogs, developed with vets: plant-based, high-dose, no junk — for gut, joints, skin and how they feel day to day.</span>
+              <span class="en">the natural pet pharmacy for dogs, developed by vets: plant-based, high-dose and free of unnecessary additives, for stomach, gut, joints, skin and general wellbeing.</span>
             </p>
             <a class="brands__link" href="https://planimol.com" target="_blank" rel="noopener">
               Planimol.com
@@ -3991,27 +4011,27 @@
   <div class="container">
     <p class="figures__note reveal">
       <span class="de">Vier Marken, alle selbst aufgebaut. Wir suchen Unternehmen aus der Tiergesundheit im weitesten Sinne — von Nutraceuticals über Technologie bis Services. Du hast eine spannende Story? Meld dich.</span>
-      <span class="en">Four brands, all built by us. We’re looking for companies in animal health in the broadest sense — nutraceuticals, technology, services. Got a story? Tell us.</span>
+      <span class="en">Four brands, all built from the ground up. We’re looking for companies in animal health in the broadest sense — from nutraceuticals to technology to services. If you have a story worth telling, get in touch.</span>
     </p>
     <div class="figures__row reveal">
       <p class="figures__value">0</p>
       <p class="figures__label">
         <span class="de">verkaufte Unternehmen — keine Fondslaufzeit, keine Exit-Uhr</span>
-        <span class="en">companies sold. No fund clock. No exit date</span>
+        <span class="en">companies sold to date — no fund term and no exit clock</span>
       </p>
     </div>
     <div class="figures__row reveal">
       <p class="figures__value">100&nbsp;%</p>
       <p class="figures__label">
         <span class="de">der Marken laufen unter ihrem eigenen Namen weiter</span>
-        <span class="en">keep their own name</span>
+        <span class="en">of our brands still trade under their own names</span>
       </p>
     </div>
     <div class="figures__row reveal">
       <p class="figures__value">100&nbsp;%</p>
       <p class="figures__label">
         <span class="de">Eigenkapital — Haltedauer unbegrenzt</span>
-        <span class="en">our own money. We can hold forever</span>
+        <span class="en">equity — no limit on how long we hold</span>
       </p>
     </div>
   </div>
@@ -4023,7 +4043,7 @@
     <div class="stat-strip__grid">
       <div class="stat-strip__item reveal">
         <div class="stat-strip__num"><span class="counter" data-target="2011" data-start="2000">2000</span></div>
-        <p class="stat-strip__label"><span class="de">Gründung des ersten Unternehmens</span><span class="en">We started in</span></p>
+        <p class="stat-strip__label"><span class="de">Gründung des ersten Unternehmens</span><span class="en">First company founded</span></p>
       </div>
       <div class="stat-strip__item reveal">
         <div class="stat-strip__num"><span class="counter" data-target="150" data-suffix="+">0</span></div>
@@ -4031,11 +4051,11 @@
       </div>
       <div class="stat-strip__item reveal">
         <div class="stat-strip__num"><span class="counter" data-target="4">0</span></div>
-        <p class="stat-strip__label"><span class="de">Marken unter einem Dach</span><span class="en">Brands</span></p>
+        <p class="stat-strip__label"><span class="de">Marken unter einem Dach</span><span class="en">Brands under one roof</span></p>
       </div>
       <div class="stat-strip__item reveal">
         <div class="stat-strip__num"><span class="counter" data-target="20" data-prefix="&gt;" data-suffix="%" data-start="0">&gt;0%</span></div>
-        <p class="stat-strip__label"><span class="de">Ø jährliches Umsatzwachstum der Gruppe</span><span class="en">Yearly growth</span></p>
+        <p class="stat-strip__label"><span class="de">Ø jährliches Umsatzwachstum der Gruppe</span><span class="en">Average annual revenue growth</span></p>
       </div>
     </div>
   </div>
@@ -4048,7 +4068,7 @@
   <div class="container">
     <div class="section-head section-head--reveal reveal">
       <div>
-        <h2><span class="de">Die Macher dahinter.</span><span class="en">Who’s behind this.</span></h2>
+        <h2><span class="de">Die Macher dahinter.</span><span class="en">The people behind it</span></h2>
       </div>
     </div>
     <div class="team-strip" data-team-strip>
@@ -4059,7 +4079,7 @@
           <p class="team-strip__role">CEO</p>
           <p class="team-strip__bio">
             <span class="de">Mitgründer von Inuvet und der Planet Group. Tiernarr durch und durch: teilt sein Leben mit Hunden, Katzen und mehreren Pferden. Tiergesundheit ist für ihn kein Geschäftsmodell, sondern Alltag.</span>
-            <span class="en">Co-founder of Inuvet and Planet Group. An animal person through and through — dogs, cats, a few horses. Animal health isn’t a business model for him. It’s daily life.</span>
+            <span class="en">Co-founder of Inuvet and Planet Group. Crazy about animals: he shares his life with dogs, cats and several horses. For him, animal health isn’t a business model. It’s everyday life.</span>
           </p>
         </div>
       </article>
@@ -4070,7 +4090,7 @@
           <p class="team-strip__role">CEO</p>
           <p class="team-strip__bio">
             <span class="de">Mitgründer von Inuvet und der Planet Group. Sohn einer Tierarztfamilie — Eltern und Schwester sind Tierärzte. Bei ihm steht am Ende immer das Tier im Mittelpunkt.</span>
-            <span class="en">Co-founder of Inuvet and Planet Group. He grew up in a family of vets — parents and sister. For him, the animal always comes first.</span>
+            <span class="en">Co-founder of Inuvet and Planet Group. He grew up in a family of vets — his parents and his sister all practice. Whatever the question, it always comes back to the animal.</span>
           </p>
         </div>
       </article>
@@ -4081,7 +4101,7 @@
           <p class="team-strip__role">CFO</p>
           <p class="team-strip__bio">
             <span class="de">15 Jahre Beteiligungen bei einem der erfolgreichsten Private-Equity-Fonds im DACH-Raum. Heute nutzt er diese Erfahrung fürs Gegenteil: eine Gruppe, die kauft, um zu behalten.</span>
-            <span class="en">Fifteen years investing at one of the most successful PE funds in DACH. He uses that experience now for the opposite: a group that buys to keep.</span>
+            <span class="en">Fifteen years in investments at one of the most successful private equity funds in the German-speaking region. Today he uses that experience for the opposite purpose: a group that buys in order to keep.</span>
           </p>
         </div>
       </article>
@@ -4092,7 +4112,7 @@
           <p class="team-strip__role">COO</p>
           <p class="team-strip__bio">
             <span class="de">Head of Operations. Sorgt dafür, dass alle Zahnräder ineinandergreifen — Logistik, Supply Chain, Controlling. Wenn hinter den Kulissen etwas hakt, bringt er es zum Laufen.</span>
-            <span class="en">Head of Operations. Makes sure the pieces mesh — logistics, supply chain, controlling. If something jams behind the scenes, he gets it running.</span>
+            <span class="en">Head of Operations. He makes sure the gears mesh, across logistics, supply chain and controlling. When something jams behind the scenes, he’s the one who gets it moving again.</span>
           </p>
         </div>
       </article>
@@ -4103,7 +4123,7 @@
           <p class="team-strip__role">CBO</p>
           <p class="team-strip__bio">
             <span class="de">Verantwortet Branding und Markenarchitektur. Sorgt dafür, dass jede Marke ihren eigenen Charakter behält — damit dein Unternehmen keine beliebige Nummer im Portfolio wird.</span>
-            <span class="en">Looks after branding and brand architecture. Makes sure each brand keeps its own character — so your company never becomes just another number in a portfolio.</span>
+            <span class="en">Responsible for branding and brand architecture. He makes sure every brand keeps its own character, so that your company never becomes just another line in a portfolio.</span>
           </p>
         </div>
       </article>
@@ -4114,7 +4134,7 @@
           <p class="team-strip__role">DOG</p>
           <p class="team-strip__bio">
             <span class="de">Steht für die vielen Hunde im Team — fast jeder Zweite hat einen, alle dürfen mit ins Büro. Wir meinen es ernst mit der Tierliebe.</span>
-            <span class="en">He stands for the dogs on the team — almost half of us have one, and they come to the office. We’re serious about loving animals.</span>
+            <span class="en">Stands in for the many dogs on the team. Almost half the team has one, and they’re all welcome in the office. We mean it about loving animals.</span>
           </p>
         </div>
       </article>
@@ -4129,7 +4149,7 @@
       <div>
         <h2>
           <span class="de">Wir nehmen nicht jeden. Vielleicht aber dich.</span>
-          <span class="en">We’re picky. You might be a fit.</span>
+          <span class="en">We don’t take everyone. Maybe you.</span>
         </h2>
       </div>
     </div>
@@ -4140,7 +4160,7 @@
         </div>
         <p class="fit__text">
           <span class="de">Wenn du wachsen willst, ohne dein Unternehmen aus der Hand zu geben.</span>
-          <span class="en">If you want to grow without handing your company over.</span>
+          <span class="en">You want to grow without giving up control of your company.</span>
         </p>
       </li>
       <li class="fit__item reveal">
@@ -4149,7 +4169,7 @@
         </div>
         <p class="fit__text">
           <span class="de">Wenn dein Unternehmen profitabel ist — oder klar auf dem Weg dahin</span>
-          <span class="en">You’re profitable — or clearly heading there</span>
+          <span class="en">Your company is profitable, or clearly on the way there.</span>
         </p>
       </li>
       <li class="fit__item reveal">
@@ -4158,7 +4178,7 @@
         </div>
         <p class="fit__text">
           <span class="de">Wenn dein Unternehmen zur Tiergesundheit im weitesten Sinne gehört.</span>
-          <span class="en">You’re in animal health. Broadly speaking.</span>
+          <span class="en">Your company is in animal health, in the broadest sense.</span>
         </p>
       </li>
       <li class="fit__item reveal">
@@ -4167,7 +4187,7 @@
         </div>
         <p class="fit__text">
           <span class="de">Wenn du dich in unseren <a class="fit__mark" href="#grundsaetze">Grundsätzen<span class="material-symbols-outlined fit__mark-arrow" aria-hidden="true">arrow_outward</span></a> wiederfindest.</span>
-          <span class="en">Our <a class="fit__mark" href="#grundsaetze">principles<span class="material-symbols-outlined fit__mark-arrow" aria-hidden="true">arrow_outward</span></a> feel like yours.</span>
+          <span class="en">You recognise yourself in our <a class="fit__mark" href="#grundsaetze">principles<span class="material-symbols-outlined fit__mark-arrow" aria-hidden="true">arrow_outward</span></a>.</span>
         </p>
       </li>
     </ul>
@@ -4182,13 +4202,13 @@
       <div>
         <h2>
           <span class="de">Und wie geht's weiter?</span>
-          <span class="en">So what’s next?</span>
+          <span class="en">So what happens next?</span>
         </h2>
       </div>
     </div>
     <p class="fit__intro reveal">
       <span class="de">Wir haben Transaktionserfahrung im Team — vom Erstgespräch bis zur Unterschrift führen wir dich schnell und sauber durch den Prozess. Aber der Prozess ist nicht der Punkt. Der Punkt ist, was danach kommt.</span>
-      <span class="en">We’ve done deals. From the first conversation through to signature, we keep it moving, and we keep it clean. But the process isn’t the point. What happens after is.</span>
+      <span class="en">We’ve done deals before. We’ll take you from a first conversation to signature, quickly and cleanly. The process isn’t the point. What comes after is.</span>
     </p>
     <ul class="fit__list">
       <li class="fit__item reveal">
@@ -4198,7 +4218,7 @@
         </div>
         <p class="fit__text">
           <span class="de">Du füllst den <a class="fit__mark" href="#fragebogen">Fragebogen<span class="material-symbols-outlined fit__mark-arrow" aria-hidden="true">arrow_outward</span></a> aus. Sechs Fragen, drei Minuten — danach wissen wir beide, worum es geht.</span>
-          <span class="en">You fill out the <a class="fit__mark" href="#fragebogen">questionnaire<span class="material-symbols-outlined fit__mark-arrow" aria-hidden="true">arrow_outward</span></a>. Six questions, three minutes. After that, we both know what this is about.</span>
+          <span class="en">You fill out the <a class="fit__mark" href="#fragebogen">questionnaire<span class="material-symbols-outlined fit__mark-arrow" aria-hidden="true">arrow_outward</span></a>. Six questions, three minutes, and we both know what this is about.</span>
         </p>
       </li>
       <li class="fit__item reveal">
@@ -4208,7 +4228,7 @@
         </div>
         <p class="fit__text">
           <span class="de">Wir lesen deine Antworten und melden uns innerhalb von 2 Werktagen persönlich. Kein Callcenter, kein automatischer Kalender.</span>
-          <span class="en">We read your answers and get in touch within two business days. No call center. No calendar link.</span>
+          <span class="en">We read your answers and get back to you personally within two business days. No call center, and no automated calendar.</span>
         </p>
       </li>
       <li class="fit__item reveal">
@@ -4218,7 +4238,7 @@
         </div>
         <p class="fit__text">
           <span class="de">Wir entwickeln ein gemeinsames Zielbild. Wo steht dein Unternehmen, wo willst du hin, wo sind deine Blind Spots — Logistik, Marketing, Operations?</span>
-          <span class="en">We get on the same page. Where the company stands, where you want it to go, where the blind spots are — logistics, marketing, operations.</span>
+          <span class="en">Together we get clear on where the company stands, where you want to take it, and where the blind spots are — logistics, marketing, operations.</span>
         </p>
       </li>
       <li class="fit__item reveal">
@@ -4228,7 +4248,7 @@
         </div>
         <p class="fit__text">
           <span class="de">Du bekommst einen konkreten Vorschlag. Wie eine Partnerschaft aussehen kann — offen und nachvollziehbar. Und dann entscheidest du.</span>
-          <span class="en">You get a real proposal. What a partnership could look like — open, easy to follow. Then you decide.</span>
+          <span class="en">You get a clear proposal for what a partnership could look like. Then you decide.</span>
         </p>
       </li>
     </ul>
@@ -4240,26 +4260,26 @@
   <div class="container">
     <div class="section-head section-head--reveal reveal">
       <div>
-        <h2><span class="de">Passt dein Unternehmen zu uns?</span><span class="en">Is this a fit?</span></h2>
+        <h2><span class="de">Passt dein Unternehmen zu uns?</span><span class="en">Is your business a good fit?</span></h2>
       </div>
     </div>
     <div class="contact-layout contact-layout--entry">
       <div class="contact-intro reveal">
         <p>
           <span class="de">Sechs Fragen, drei Minuten. Danach wissen wir beide, ob es sich lohnt zu reden — und du hast für dich ein paar Dinge sortiert.</span>
-          <span class="en">Six questions. Three minutes. After that we both know if it’s worth talking — and you’ll have sorted a few things out for yourself.</span>
+          <span class="en">Six questions, three minutes. Afterwards we both know whether it’s worth talking, and you’ll have sorted out a few things for yourself.</span>
         </p>
       </div>
 
       <div class="contact-entry reveal">
         <a class="btn contact-entry__cta" href="#fragebogen">
           <span class="de">Jetzt in 3 Minuten herausfinden</span>
-          <span class="en">See if we’re a fit</span>
+          <span class="en">Find out now in 3 minutes</span>
           <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
         </a>
         <p class="contact-entry__note">
           <span class="de">Kein Termin, kein Verkaufsgespräch. Wir sichten deine Antworten und melden uns innerhalb von 2 Werktagen.</span>
-          <span class="en">No meeting. No sales call. We read your answers and get in touch within two business days.</span>
+          <span class="en">No appointment, no sales pitch. We look through your answers and get back to you within two business days.</span>
         </p>
       </div>
     </div>
@@ -4278,7 +4298,10 @@
 </section>
 <script>
 function toggleLang() {
-  document.body.classList.toggle('lang-en');
+  const en = !document.documentElement.classList.contains('lang-en');
+  document.documentElement.classList.toggle('lang-en', en);
+  document.documentElement.lang = en ? 'en' : 'de';
+  try { localStorage.setItem('planet-lang', en ? 'en' : 'de'); } catch (e) {}
   document.dispatchEvent(new CustomEvent('langchange'));
 }
 
@@ -4640,7 +4663,7 @@ function toggleLang() {
   const textarea = form.querySelector('.quiz__textarea');
   function syncPlaceholder() {
     if (!textarea) return;
-    const en = document.body.classList.contains('lang-en');
+    const en = document.documentElement.classList.contains('lang-en');
     textarea.placeholder = en
       ? (textarea.dataset.phEn || textarea.placeholder)
       : (textarea.dataset.phDe || textarea.placeholder);

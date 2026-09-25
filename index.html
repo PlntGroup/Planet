@@ -2,6 +2,14 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
+<script>
+try {
+  if (localStorage.getItem('planet-lang') === 'en') {
+    document.documentElement.classList.add('lang-en');
+    document.documentElement.lang = 'en';
+  }
+} catch (e) {}
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Planet — Gesunde Tiere. Starke Marken.</title>
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
@@ -13,8 +21,8 @@
 <style>
   /* Sprach-Logik (funktional, kein visuelles Override) */
   .en { display: none; }
-  body.lang-en .de { display: none; }
-  body.lang-en .en { display: inline; }
+  html.lang-en .de { display: none; }
+  html.lang-en .en { display: inline; }
 
   /* Material Symbols — feinere Strichstärke als Icons Outlined */
   .material-symbols-outlined {
@@ -1318,8 +1326,8 @@
   }
   /* planet.css setzt .quote-type__who span auf display:block — sonst beide Sprachen sichtbar */
   #grundsatz-zitat .quote-type__who > .en { display: none; }
-  body.lang-en #grundsatz-zitat .quote-type__who > .de { display: none; }
-  body.lang-en #grundsatz-zitat .quote-type__who > .en { display: inline; }
+  html.lang-en #grundsatz-zitat .quote-type__who > .de { display: none; }
+  html.lang-en #grundsatz-zitat .quote-type__who > .en { display: inline; }
   #grundsatz-zitat .quote-type__who > .de,
   #grundsatz-zitat .quote-type__who > .en {
     opacity: 1;
@@ -2935,7 +2943,7 @@
         <h2>
           <a href="#wege">
             <span class="de">Zwei Wege. Welcher ist deiner?</span>
-            <span class="en">Two paths. Which is yours?</span>
+            <span class="en">Choose your path.</span>
           </a>
         </h2>
         <a class="weiche__scroll" href="#wege" aria-label="Scroll">
@@ -2953,7 +2961,7 @@
         <div class="paths__body flow">
           <p>
             <span class="de">Du hast ein Unternehmen aufgebaut, das läuft. Aber du machst noch alles selbst: Logistik, Finanzen, IT, Personal. Zeit, die dir fehlt — für Marke, Produkt und Wachstum.</span>
-            <span class="en">You’ve built a company that works. You’re still running logistics, finance, IT and HR yourself. That’s time you don’t have for brand, product and growth.</span>
+            <span class="en">You’ve built a successful business, but you're still wearing all the hats. Logistics, finance, IT, HR—it all falls on you. That's time stolen from what actually matters: your brand, your product, and your growth.</span>
           </p>
           <p class="paths__go">
             <span class="de">hier lang</span>
@@ -2971,7 +2979,7 @@
         <div class="paths__body flow">
           <p>
             <span class="de">Du denkst über Unternehmensnachfolge nach — aber nicht um jeden Preis. Dein Unternehmen soll in guten Händen sein. Du bestimmst das Tempo.</span>
-            <span class="en">You’re thinking about succession — just not at any cost. Your company should be in good hands. You set the pace.</span>
+            <span class="en">You’re thinking about stepping back, but you won't hand over the reins to just anyone. You want your legacy in safe hands—and on your own terms.</span>
           </p>
           <p class="paths__go">
             <span class="de">hier lang</span>
@@ -2985,7 +2993,10 @@
 </section>
 <script>
 function toggleLang() {
-  document.body.classList.toggle('lang-en');
+  const en = !document.documentElement.classList.contains('lang-en');
+  document.documentElement.classList.toggle('lang-en', en);
+  document.documentElement.lang = en ? 'en' : 'de';
+  try { localStorage.setItem('planet-lang', en ? 'en' : 'de'); } catch (e) {}
   document.dispatchEvent(new CustomEvent('langchange'));
 }
 
@@ -3353,7 +3364,7 @@ function toggleLang() {
   const textarea = form.querySelector('.quiz__textarea');
   function syncPlaceholder() {
     if (!textarea) return;
-    const en = document.body.classList.contains('lang-en');
+    const en = document.documentElement.classList.contains('lang-en');
     textarea.placeholder = en
       ? (textarea.dataset.phEn || textarea.placeholder)
       : (textarea.dataset.phDe || textarea.placeholder);
