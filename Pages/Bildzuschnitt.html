@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Insta-Crop Pro | Planet</title>
+  <title>Image Crop | Planet</title>
   <link rel="stylesheet" href="https://use.typekit.net/phj5hyp.css?v=2026-05-25">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
   <link rel="stylesheet" href="../planet.css">
@@ -224,6 +224,16 @@
       aspect-ratio: 9 / 16;
       margin-inline: auto;
     }
+    .crop-frame--circle {
+      background-color: var(--planet-white);
+      background-image:
+        linear-gradient(45deg, var(--planet-neutral) 25%, transparent 25%),
+        linear-gradient(-45deg, var(--planet-neutral) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, var(--planet-neutral) 75%),
+        linear-gradient(-45deg, transparent 75%, var(--planet-neutral) 75%);
+      background-size: 20px 20px;
+      background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+    }
     .crop-frame img {
       display: block;
       width: 100%;
@@ -274,12 +284,13 @@
   <script type="text/babel">
     const { useState, useRef, useEffect } = React;
 
-    const FORMATS = ['9x16', '4x5', '1x1'];
+    const FORMATS = ['9x16', '4x5', '1x1', '1x1kreis'];
 
     const FORMAT_CONFIG = {
       '9x16': { ratio: 9 / 16, label: '9:16' },
       '4x5': { ratio: 4 / 5, label: '4:5' },
       '1x1': { ratio: 1 / 1, label: '1:1' },
+      '1x1kreis': { ratio: 1 / 1, label: '1:1 Kreis', circle: true },
     };
 
     const defaultFormats = () => Object.fromEntries(FORMATS.map((f) => [f, true]));
@@ -346,7 +357,7 @@
         });
       };
 
-      const cropImage = (image, targetAspectRatio) => {
+      const cropImage = (image, targetAspectRatio, { circle = false } = {}) => {
         return new Promise((resolve) => {
           const canvas = document.createElement('canvas');
           const ctx = canvas.getContext('2d');
@@ -368,7 +379,15 @@
 
           canvas.width = cropWidth;
           canvas.height = cropHeight;
-          ctx.drawImage(image, startX, startY, cropWidth, cropHeight, 0, 0, cropWidth, cropHeight);
+          ctx.drawImage(image, startX, startY, cropWidth, cropHeight, 0, 0, canvas.width, canvas.height);
+
+          if (circle) {
+            ctx.globalCompositeOperation = 'destination-in';
+            ctx.beginPath();
+            ctx.arc(canvas.width / 2, canvas.height / 2, Math.min(canvas.width, canvas.height) / 2, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
           resolve(canvas.toDataURL('image/png'));
         });
       };
@@ -419,7 +438,9 @@
             const crops = {};
 
             for (const fmt of formatsToProcess) {
-              crops[fmt] = await cropImage(initialProcessedImg, FORMAT_CONFIG[fmt].ratio);
+              crops[fmt] = await cropImage(initialProcessedImg, FORMAT_CONFIG[fmt].ratio, {
+                circle: !!FORMAT_CONFIG[fmt].circle,
+              });
             }
 
             processed.push({
@@ -466,8 +487,8 @@
         <div className="crop-page">
           <section className="hero">
             <div className="container flow">
-              <h1>Insta-Crop <em>Pro</em></h1>
-              <p className="sub">Verlustfreier Zuschnitt mit individueller Benennung — 9:16, 4:5 und 1:1 für Social Media.</p>
+              <h1>Image <em>Crop</em></h1>
+              <p className="sub">Verlustfreier Zuschnitt mit individueller Benennung — 9:16, 4:5, 1:1 und 1:1 Kreis für Social Media.</p>
             </div>
           </section>
 
@@ -578,7 +599,7 @@
                       {item.formats.map((fmt) => (
                         <div key={fmt} className="crop-item">
                           <div
-                            className={`crop-frame crop-frame--${fmt}`}
+                            className={`crop-frame crop-frame--${fmt}${FORMAT_CONFIG[fmt].circle ? ' crop-frame--circle' : ''}`}
                             style={{ '--crop-ratio': FORMAT_CONFIG[fmt].ratio }}
                           >
                             <img src={item.crops[fmt]} alt={`${item.targetBaseName} ${fmt}`} />
@@ -611,7 +632,7 @@
 
           <footer className="crop-footer">
             <div className="container">
-              <span className="meta">Dateinamen werden automatisch mit _9x16, _4x5 oder _1x1 ergänzt.</span>
+              <span className="meta">Dateinamen werden automatisch mit _9x16, _4x5, _1x1 oder _1x1kreis ergänzt. Der Kreis ist ein PNG mit transparenten Ecken.</span>
             </div>
           </footer>
         </div>
