@@ -23,6 +23,41 @@
 
     .crop-main { display: flex; flex-direction: column; gap: var(--space-6); }
 
+    .mode-switch {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-2);
+    }
+    .mode-switch__btn {
+      appearance: none;
+      border: 1.5px solid transparent;
+      background: var(--planet-neutral);
+      color: var(--planet-black);
+      border-radius: var(--radius-card);
+      padding: var(--space-3);
+      font-family: var(--planet-font);
+      font-weight: var(--weight-display);
+      font-size: var(--text-body);
+      cursor: pointer;
+      text-align: left;
+    }
+    .mode-switch__btn strong { display: block; font-size: var(--text-h4); }
+    .mode-switch__btn span { display: block; margin-top: var(--space-1); opacity: 0.65; font-size: var(--text-meta); font-weight: var(--weight-body); }
+    .mode-switch__btn.is-active {
+      border-color: var(--planet-primary);
+      background: var(--planet-white);
+    }
+    .resize-preview {
+      list-style: none;
+      margin: var(--space-2) 0 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+      font-size: var(--text-meta);
+      opacity: 0.75;
+    }
+
     .drop-zone {
       display: flex;
       flex-direction: column;
@@ -215,7 +250,16 @@
       border: 1px solid var(--planet-tint);
       background: var(--planet-white);
     }
+    .circle-stage--rect {
+      border-radius: var(--radius-card);
+      width: min(520px, 100%);
+    }
     .circle-stage.is-dragging { cursor: grabbing; }
+    .size-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-2);
+    }
     .circle-stage img {
       position: absolute;
       max-width: none;
@@ -351,6 +395,7 @@
     @media (max-width: 900px) {
       .crop-grid { grid-template-columns: 1fr; }
       .crop-frame { max-height: 360px; }
+      .mode-switch { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -360,7 +405,14 @@
   <script type="text/babel">
     const { useState, useRef, useEffect } = React;
 
-    const FORMATS = ['9x16', '4x5', '1x1', '1x1kreis'];
+    const CROP_FORMATS = ['9x16', '4x5', '1x1'];
+    const FORMATS = CROP_FORMATS;
+
+    const MODES = [
+      { id: 'crop', label: 'Zuschnitt', hint: '9:16, 4:5 und 1:1' },
+      { id: 'circle', label: 'Kreisschneider', hint: 'Portrait mit transparenten Ecken' },
+      { id: 'resize', label: 'Verkleinern', hint: 'Skalieren oder beschneiden' },
+    ];
 
     const FORMAT_CONFIG = {
       '9x16': { ratio: 9 / 16, label: '9:16' },
@@ -378,11 +430,12 @@
     const defaultCircleFrame = () => ({ scale: 1, offsetX: 0, offsetY: 0 });
     const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
-    const clampCircleFrame = (frame, nw, nh) => {
+    const clampCircleFrame = (frame, nw, nh, ratio = 1) => {
       const scale = clamp(frame.scale, 1, 4);
-      const cover = Math.max(1 / nw, 1 / nh);
+      const frameH = 1 / ratio;
+      const cover = Math.max(1 / nw, frameH / nh);
       const maxX = Math.max(0, (nw * cover * scale - 1) / 2);
-      const maxY = Math.max(0, (nh * cover * scale - 1) / 2);
+      const maxY = Math.max(0, (nh * cover * scale - frameH) / 2);
       return {
         scale,
         offsetX: clamp(frame.offsetX, -maxX, maxX),
@@ -390,16 +443,17 @@
       };
     };
 
-    const circleImageLayout = (nw, nh, frame, size) => {
-      const safe = clampCircleFrame(frame, nw, nh);
-      const cover = Math.max(size / nw, size / nh);
+    const circleImageLayout = (nw, nh, frame, size, ratio = 1) => {
+      const safe = clampCircleFrame(frame, nw, nh, ratio);
+      const viewH = size / ratio;
+      const cover = Math.max(size / nw, viewH / nh);
       const width = nw * cover * safe.scale;
       const height = nh * cover * safe.scale;
       return {
         width,
         height,
         x: (size - width) / 2 + safe.offsetX * size,
-        y: (size - height) / 2 + safe.offsetY * size,
+        y: (viewH - height) / 2 + safe.offsetY * size,
       };
     };
 
@@ -419,7 +473,48 @@
       return canvas.toDataURL('image/png');
     };
 
-    const CircleStage = ({ url, frame, onChange }) => {
+    const resizeToWidth = (image, targetWidth, mime) => {
+      const sourceWidth = image.naturalWidth;
+      const sourceHeight = image.naturalHeight;
+      const width = Math.min(sourceWidth, targetWidth);
+      const height = Math.max(1, Math.round(sourceHeight * (width / sourceWidth)));
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = width;
+      canvas.height = height;
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(image, 0, 0, width, height);
+      const type = mime === 'image/jpeg' ? 'image/jpeg' : 'image/png';
+      return {
+        dataUrl: canvas.toDataURL(type, 0.92),
+        width,
+        height,
+        ext: type === 'image/jpeg' ? 'jpg' : 'png',
+        unchanged: width === sourceWidth,
+      };
+    };
+
+    const renderTrim = (image, frame, outW, outH, mime) => {
+      const ratio = outW / outH;
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = outW;
+      canvas.height = outH;
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      const layout = circleImageLayout(image.naturalWidth, image.naturalHeight, frame, outW, ratio);
+      ctx.drawImage(image, layout.x, layout.y, layout.width, layout.height);
+      const type = mime === 'image/jpeg' ? 'image/jpeg' : 'image/png';
+      return {
+        dataUrl: canvas.toDataURL(type, 0.92),
+        width: outW,
+        height: outH,
+        ext: type === 'image/jpeg' ? 'jpg' : 'png',
+      };
+    };
+
+    const CircleStage = ({ url, frame, onChange, ratio = 1, round = true, scaleInputId = 'circle-scale' }) => {
       const stageRef = useRef(null);
       const frameRef = useRef(frame);
       const onChangeRef = useRef(onChange);
@@ -429,10 +524,13 @@
       const [view, setView] = useState(0);
       const [dragging, setDragging] = useState(false);
       const natural = loaded && loaded.url === url ? loaded : null;
+      const safeRatio = ratio > 0 ? ratio : 1;
+      const ratioRef = useRef(safeRatio);
 
       frameRef.current = frame;
       onChangeRef.current = onChange;
       naturalRef.current = natural;
+      ratioRef.current = safeRatio;
 
       useEffect(() => {
         const el = stageRef.current;
@@ -453,7 +551,7 @@
           event.preventDefault();
           const current = frameRef.current;
           const scale = current.scale * Math.exp(-event.deltaY * 0.0012);
-          onChangeRef.current(clampCircleFrame({ ...current, scale }, size.w, size.h));
+          onChangeRef.current(clampCircleFrame({ ...current, scale }, size.w, size.h, ratioRef.current));
         };
         el.addEventListener('wheel', onWheel, { passive: false });
         return () => el.removeEventListener('wheel', onWheel);
@@ -462,7 +560,7 @@
       const apply = (next) => {
         const size = naturalRef.current;
         if (!size) return;
-        onChangeRef.current(clampCircleFrame(next, size.w, size.h));
+        onChangeRef.current(clampCircleFrame(next, size.w, size.h, ratioRef.current));
       };
 
       const endDrag = (event) => {
@@ -474,7 +572,7 @@
       };
 
       const layout = natural && view
-        ? circleImageLayout(natural.w, natural.h, frame, view)
+        ? circleImageLayout(natural.w, natural.h, frame, view, safeRatio)
         : null;
 
       return (
@@ -482,7 +580,8 @@
           <div className="circle-stage-wrap">
             <div
               ref={stageRef}
-              className={`circle-stage${dragging ? ' is-dragging' : ''}`}
+              className={`circle-stage${round ? '' : ' circle-stage--rect'}${dragging ? ' is-dragging' : ''}`}
+              style={round ? undefined : { aspectRatio: String(safeRatio) }}
               role="application"
               aria-label="Bildausschnitt verschieben"
               onPointerDown={(event) => {
@@ -530,9 +629,9 @@
           </div>
           <p className="meta">Ziehen zum Verschieben. Regler oder Mausrad zum Skalieren.</p>
           <div className="circle-scale">
-            <label className="input-label" htmlFor="circle-scale">Skalierung</label>
+            <label className="input-label" htmlFor={scaleInputId}>Skalierung</label>
             <input
-              id="circle-scale"
+              id={scaleInputId}
               type="range"
               min="1"
               max="4"
@@ -555,6 +654,11 @@
       const [isDragging, setIsDragging] = useState(false);
       const [customBaseName, setCustomBaseName] = useState('');
       const [selectedFormats, setSelectedFormats] = useState(defaultFormats);
+      const [mode, setMode] = useState('crop');
+      const [targetWidth, setTargetWidth] = useState('1200');
+      const [targetHeight, setTargetHeight] = useState('800');
+      const [resizeMode, setResizeMode] = useState('scale');
+      const [fileSizes, setFileSizes] = useState([]);
       const [circleFrames, setCircleFrames] = useState([]);
       const [circleEditIndex, setCircleEditIndex] = useState(0);
       const [circleExportSize, setCircleExportSize] = useState(600);
@@ -562,7 +666,12 @@
       const fileInputRef = useRef(null);
       const resultsRef = useRef(null);
 
-      const activeFormats = FORMATS.filter((f) => selectedFormats[f]);
+      const activeFormats = CROP_FORMATS.filter((f) => selectedFormats[f]);
+      const parsedWidth = parseInt(targetWidth, 10);
+      const parsedHeight = parseInt(targetHeight, 10);
+      const widthReady = Number.isFinite(parsedWidth) && parsedWidth >= 1;
+      const heightReady = Number.isFinite(parsedHeight) && parsedHeight >= 1;
+      const resizeReady = resizeMode === 'trim' ? widthReady && heightReady : widthReady;
       const circleEditAt = Math.min(circleEditIndex, Math.max(0, selectedFiles.length - 1));
       const activeCircleFrame = circleFrames[circleEditAt] || defaultCircleFrame();
 
@@ -578,11 +687,47 @@
         return () => urls.forEach((url) => URL.revokeObjectURL(url));
       }, [selectedFiles]);
 
-      const getFormattedFileName = (base, format, circleSize) => (
-        format === '1x1kreis' && circleSize
-          ? `${base}_${format}_${circleSize}.png`
-          : `${base}_${format}.png`
-      );
+      useEffect(() => {
+        let cancelled = false;
+        if (!previewUrls.length) {
+          setFileSizes([]);
+          return undefined;
+        }
+        Promise.all(previewUrls.map((url) => new Promise((resolve) => {
+          const img = new Image();
+          img.onload = () => resolve({ w: img.naturalWidth, h: img.naturalHeight });
+          img.onerror = () => resolve(null);
+          img.src = url;
+        }))).then((sizes) => {
+          if (!cancelled) setFileSizes(sizes);
+        });
+        return () => { cancelled = true; };
+      }, [previewUrls]);
+
+      const selectMode = (next) => {
+        setMode(next);
+        setCroppedImages([]);
+      };
+
+      const plannedSize = (size) => {
+        if (!size || !widthReady) return null;
+        const width = Math.min(size.w, parsedWidth);
+        const height = Math.max(1, Math.round(size.h * (width / size.w)));
+        return { width, height, unchanged: width === size.w };
+      };
+
+      const getFormattedFileName = (base, format, item) => {
+        if (format === 'resize' || format === 'trim') {
+          const name = item?.originalName || base;
+          const match = String(name).match(/^(.*)\.([^.]+)$/);
+          const stem = match ? match[1] : name;
+          const ext = match ? match[2] : (item?.outExt || 'png');
+          const suffix = item?.nameSuffix || (format === 'trim' ? 'crop' : 'small');
+          return `${stem}_${suffix}.${ext}`;
+        }
+        if (format === '1x1kreis' && item?.circleSize) return `${base}_${format}_${item.circleSize}.png`;
+        return `${base}_${format}.png`;
+      };
 
       const addFiles = (files) => {
         const validFiles = Array.from(files).filter(
@@ -667,15 +812,29 @@
 
       const toggleFormat = (fmt) => {
         setSelectedFormats((prev) => {
-          const active = FORMATS.filter((f) => prev[f]);
+          const active = CROP_FORMATS.filter((f) => prev[f]);
           if (prev[fmt] && active.length <= 1) return prev;
           return { ...prev, [fmt]: !prev[fmt] };
         });
       };
 
+      const baseNameFor = (file, index) => {
+        if (customBaseName.trim() !== '') {
+          return selectedFiles.length > 1
+            ? `${customBaseName.trim()}_${index + 1}`
+            : customBaseName.trim();
+        }
+        return file.name.replace(/\.[^.]+$/, '');
+      };
+
       const processImages = async () => {
-        const formatsToProcess = FORMATS.filter((f) => selectedFormats[f]);
+        const formatsToProcess = mode === 'circle'
+          ? ['1x1kreis']
+          : mode === 'resize'
+            ? [resizeMode === 'trim' ? 'trim' : 'resize']
+            : CROP_FORMATS.filter((f) => selectedFormats[f]);
         if (!formatsToProcess.length) return;
+        if (mode === 'resize' && !resizeReady) return;
 
         setIsLoading(true);
         setCroppedImages([]);
@@ -684,15 +843,6 @@
         for (let i = 0; i < selectedFiles.length; i++) {
           const file = selectedFiles[i];
           let imageUrl = null;
-
-          let baseNameForThisFile = '';
-          if (customBaseName.trim() !== '') {
-            baseNameForThisFile = selectedFiles.length > 1
-              ? `${customBaseName.trim()}_${i + 1}`
-              : customBaseName.trim();
-          } else {
-            baseNameForThisFile = file.name.replace(/\.[^.]+$/, '');
-          }
 
           try {
             imageUrl = URL.createObjectURL(file);
@@ -703,20 +853,47 @@
               img.src = imageUrl;
             });
 
-            const initialProcessedImg = await processInitialWidth(img, 1080);
             const crops = {};
+            let circleSize = null;
+            let outWidth = null;
+            let outHeight = null;
+            let outExt = 'png';
+            let nameSuffix = null;
 
-            for (const fmt of formatsToProcess) {
-              crops[fmt] = FORMAT_CONFIG[fmt].circle
-                ? renderCirclePng(img, circleFrames[i] || defaultCircleFrame(), circleExportSize)
-                : await cropImage(initialProcessedImg, FORMAT_CONFIG[fmt].ratio);
+            if (mode === 'resize' && resizeMode === 'trim') {
+              const trimmed = renderTrim(img, circleFrames[i] || defaultCircleFrame(), parsedWidth, parsedHeight, file.type);
+              crops.trim = trimmed.dataUrl;
+              outWidth = trimmed.width;
+              outHeight = trimmed.height;
+              outExt = trimmed.ext;
+              nameSuffix = 'crop';
+            } else if (mode === 'resize') {
+              const resized = resizeToWidth(img, parsedWidth, file.type);
+              crops.resize = resized.dataUrl;
+              outWidth = resized.width;
+              outHeight = resized.height;
+              outExt = resized.ext;
+              nameSuffix = 'small';
+            } else if (mode === 'circle') {
+              crops['1x1kreis'] = renderCirclePng(img, circleFrames[i] || defaultCircleFrame(), circleExportSize);
+              circleSize = circleExportSize;
+            } else {
+              const initialProcessedImg = await processInitialWidth(img, 1080);
+              for (const fmt of formatsToProcess) {
+                crops[fmt] = await cropImage(initialProcessedImg, FORMAT_CONFIG[fmt].ratio);
+              }
             }
 
             processed.push({
-              targetBaseName: baseNameForThisFile,
+              targetBaseName: baseNameFor(file, i),
+              originalName: file.name,
               formats: formatsToProcess,
               crops,
-              circleSize: formatsToProcess.some((fmt) => FORMAT_CONFIG[fmt].circle) ? circleExportSize : null,
+              circleSize,
+              outWidth,
+              outHeight,
+              outExt,
+              nameSuffix,
             });
           } catch (e) {
             console.error(e);
@@ -742,14 +919,15 @@
           item.formats.forEach((fmt) => {
             const dataUrl = item.crops[fmt];
             if (dataUrl) {
-              zip.file(getFormattedFileName(item.targetBaseName, fmt, item.circleSize), dataUrl.split(',')[1], { base64: true });
+              zip.file(getFormattedFileName(item.targetBaseName, fmt, item), dataUrl.split(',')[1], { base64: true });
             }
           });
         });
         const content = await zip.generateAsync({ type: 'blob' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(content);
-        link.download = `${customBaseName.trim() || 'social_crops'}.zip`;
+        const zipFallback = mode === 'resize' ? 'verkleinert' : mode === 'circle' ? 'kreise' : 'social_crops';
+        link.download = `${customBaseName.trim() || zipFallback}.zip`;
         link.click();
       };
 
@@ -758,11 +936,26 @@
           <section className="hero">
             <div className="container flow">
               <h1>Image <em>Crop</em></h1>
-              <p className="sub">Verlustfreier Zuschnitt mit individueller Benennung — 9:16, 4:5, 1:1 und 1:1 Kreis für Social Media.</p>
+              <p className="sub">Drei getrennte Rubriken: Social-Zuschnitt, Kreisschneider und Verkleinern über die Endbreite.</p>
             </div>
           </section>
 
           <main className="container crop-main">
+            <div className="mode-switch" role="tablist" aria-label="Rubrik">
+              {MODES.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={mode === item.id}
+                  className={`mode-switch__btn${mode === item.id ? ' is-active' : ''}`}
+                  onClick={() => selectMode(item.id)}
+                >
+                  <strong>{item.label}</strong>
+                  <span>{item.hint}</span>
+                </button>
+              ))}
+            </div>
             <div
               className={`drop-zone${isDragging ? ' is-dragging' : ''}`}
               onDragOver={handleDragOver}
@@ -809,26 +1002,28 @@
                   ))}
                 </div>
 
-                <div className="format-field">
-                  <span className="input-label">Formate</span>
-                  <div className="format-options">
-                    {FORMATS.map((fmt) => (
-                      <label key={fmt} className="format-option">
-                        <input
-                          type="checkbox"
-                          checked={selectedFormats[fmt]}
-                          onChange={() => toggleFormat(fmt)}
-                        />
-                        {FORMAT_CONFIG[fmt].label}
-                      </label>
-                    ))}
+                {mode === 'crop' && (
+                  <div className="format-field">
+                    <span className="input-label">Formate</span>
+                    <div className="format-options">
+                      {CROP_FORMATS.map((fmt) => (
+                        <label key={fmt} className="format-option">
+                          <input
+                            type="checkbox"
+                            checked={selectedFormats[fmt]}
+                            onChange={() => toggleFormat(fmt)}
+                          />
+                          {FORMAT_CONFIG[fmt].label}
+                        </label>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
 
-                {selectedFormats['1x1kreis'] && previewUrls[circleEditAt] && (
+                {mode === 'circle' && previewUrls[circleEditAt] && (
                   <div className="circle-editor">
                     <div className="circle-editor__head">
-                      <h3>Kreis zuschneiden</h3>
+                      <h3>Ausschnitt</h3>
                       <button
                         type="button"
                         className="btn btn--ghost"
@@ -875,6 +1070,122 @@
                   </div>
                 )}
 
+                {mode === 'resize' && (
+                  <div className="format-field">
+                    <span className="input-label">Art</span>
+                    <div className="format-options" role="radiogroup" aria-label="Art">
+                      <label className="format-option">
+                        <input
+                          type="radio"
+                          name="resize-mode"
+                          checked={resizeMode === 'scale'}
+                          onChange={() => setResizeMode('scale')}
+                        />
+                        Skalieren
+                      </label>
+                      <label className="format-option">
+                        <input
+                          type="radio"
+                          name="resize-mode"
+                          checked={resizeMode === 'trim'}
+                          onChange={() => setResizeMode('trim')}
+                        />
+                        Beschneiden
+                      </label>
+                    </div>
+                    <div className="name-field">
+                      <div className={resizeMode === 'trim' ? 'size-row' : undefined}>
+                        <div>
+                          <label className="input-label" htmlFor="target-width">Endbreite in px</label>
+                          <input
+                            id="target-width"
+                            className="input"
+                            type="number"
+                            min="1"
+                            max="8000"
+                            inputMode="numeric"
+                            value={targetWidth}
+                            onChange={(e) => setTargetWidth(e.target.value)}
+                            placeholder="z. B. 1200"
+                          />
+                        </div>
+                        {resizeMode === 'trim' && (
+                          <div>
+                            <label className="input-label" htmlFor="target-height">Endhöhe in px</label>
+                            <input
+                              id="target-height"
+                              className="input"
+                              type="number"
+                              min="1"
+                              max="8000"
+                              inputMode="numeric"
+                              value={targetHeight}
+                              onChange={(e) => setTargetHeight(e.target.value)}
+                              placeholder="z. B. 800"
+                            />
+                          </div>
+                        )}
+                      </div>
+                      <p className="meta">
+                        {resizeMode === 'trim'
+                          ? 'Das Bild wird auf diese Fläche beschnitten. Ziehen verschiebt den Ausschnitt.'
+                          : 'Die Höhe bleibt im Seitenverhältnis. Schmalere Bilder werden nicht vergrößert.'}
+                      </p>
+                      {resizeMode === 'scale' && widthReady && (
+                        <ul className="resize-preview">
+                          {selectedFiles.map((file, index) => {
+                            const next = plannedSize(fileSizes[index]);
+                            if (!next) return null;
+                            const current = fileSizes[index];
+                            return (
+                              <li key={`${file.name}-${index}`}>
+                                {file.name}: {current.w} × {current.h} → {next.unchanged ? 'bleibt so' : `${next.width} × ${next.height}`}
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      )}
+                    </div>
+                    {resizeMode === 'trim' && resizeReady && previewUrls[circleEditAt] && (
+                      <div className="circle-editor">
+                        <div className="circle-editor__head">
+                          <h3>Ausschnitt</h3>
+                          <button
+                            type="button"
+                            className="btn btn--ghost"
+                            onClick={() => updateCircleFrame(circleEditAt, defaultCircleFrame())}
+                          >
+                            Zurücksetzen
+                          </button>
+                        </div>
+                        {selectedFiles.length > 1 && (
+                          <div className="circle-files">
+                            {selectedFiles.map((file, index) => (
+                              <button
+                                key={`${file.name}-${index}`}
+                                type="button"
+                                className={`circle-file${index === circleEditAt ? ' is-active' : ''}`}
+                                onClick={() => setCircleEditIndex(index)}
+                              >
+                                {file.name}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                        <CircleStage
+                          url={previewUrls[circleEditAt]}
+                          frame={activeCircleFrame}
+                          ratio={parsedWidth / parsedHeight}
+                          round={false}
+                          scaleInputId="trim-scale"
+                          onChange={(frame) => updateCircleFrame(circleEditAt, frame)}
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {mode !== 'resize' && (
                 <div className="name-field">
                   <label className="input-label" htmlFor="base-name">Basis-Dateiname (optional)</label>
                   <input
@@ -886,14 +1197,23 @@
                     placeholder="YYYY_MM_DD_Brand_Produkt_Bezeichnung"
                   />
                 </div>
+                )}
 
                 <button
                   type="button"
                   className="btn btn--block"
                   onClick={processImages}
-                  disabled={isLoading || activeFormats.length === 0}
+                  disabled={isLoading || (mode === 'crop' && activeFormats.length === 0) || (mode === 'resize' && !resizeReady)}
                 >
-                  {isLoading ? 'Verarbeitung läuft…' : 'Jetzt verlustfrei zuschneiden'}
+                  {isLoading
+                    ? 'Verarbeitung läuft…'
+                    : mode === 'circle'
+                      ? 'Kreis exportieren'
+                      : mode === 'resize' && resizeMode === 'trim'
+                        ? 'Jetzt beschneiden'
+                        : mode === 'resize'
+                          ? 'Jetzt verkleinern'
+                          : 'Jetzt verlustfrei zuschneiden'}
                 </button>
               </section>
             )}
@@ -902,14 +1222,14 @@
               <section className="flow">
                 <div className="results-head" ref={resultsRef}>
                   <h2>Deine Ergebnisse</h2>
-                  <p>Alle Dateien werden als PNG gespeichert.</p>
+                  <p>{mode === 'resize' ? 'JPEG bleibt JPEG, PNG bleibt PNG.' : 'Alle Dateien werden als PNG gespeichert.'}</p>
                 </div>
 
                 {croppedImages.map((item, idx) => (
                   <article key={item.targetBaseName} className="result-card">
                     <div className="result-card__head">
                       <span className="result-num">{idx + 1}</span>
-                      <h4>{item.targetBaseName}.png</h4>
+                      <h4>{item.formats[0] === 'resize' || item.formats[0] === 'trim' ? getFormattedFileName(item.targetBaseName, item.formats[0], item) : `${item.targetBaseName}.png`}</h4>
                     </div>
 
                     <div
@@ -919,21 +1239,23 @@
                       {item.formats.map((fmt) => (
                         <div key={fmt} className="crop-item">
                           <div
-                            className={`crop-frame crop-frame--${fmt}${FORMAT_CONFIG[fmt].circle ? ' crop-frame--circle' : ''}`}
-                            style={{ '--crop-ratio': FORMAT_CONFIG[fmt].ratio }}
+                            className={`crop-frame crop-frame--${fmt}${fmt === '1x1kreis' ? ' crop-frame--circle' : ''}`}
+                            style={{ '--crop-ratio': (fmt === 'resize' || fmt === 'trim') && item.outWidth ? item.outWidth / item.outHeight : FORMAT_CONFIG[fmt].ratio }}
                           >
                             <img src={item.crops[fmt]} alt={`${item.targetBaseName} ${fmt}`} />
                           </div>
                           <div className="crop-item__foot">
                             <span className="status-badge">
-                              {FORMAT_CONFIG[fmt].circle && item.circleSize
-                                ? `${FORMAT_CONFIG[fmt].label} · ${item.circleSize === 600 ? '600 px' : '1080 × 1080'}`
-                                : FORMAT_CONFIG[fmt].label}
+                              {fmt === 'resize' || fmt === 'trim'
+                                ? `${item.outWidth} × ${item.outHeight} px`
+                                : fmt === '1x1kreis' && item.circleSize
+                                  ? `1:1 Kreis · ${item.circleSize === 600 ? '600 px' : '1080 × 1080'}`
+                                  : FORMAT_CONFIG[fmt].label}
                             </span>
                             <button
                               type="button"
                               className="btn btn--secondary"
-                              onClick={() => downloadImage(item.crops[fmt], getFormattedFileName(item.targetBaseName, fmt, item.circleSize))}
+                              onClick={() => downloadImage(item.crops[fmt], getFormattedFileName(item.targetBaseName, fmt, item))}
                             >
                               Download
                             </button>
@@ -956,7 +1278,15 @@
 
           <footer className="crop-footer">
             <div className="container">
-              <span className="meta">Dateinamen enden auf _9x16, _4x5, _1x1 oder _1x1kreis_600 / _1x1kreis_1080. Der Kreis ist ein PNG mit transparenten Ecken.</span>
+              <span className="meta">
+                {mode === 'circle'
+                  ? 'Der Kreis ist ein PNG mit transparenten Ecken. Dateinamen enden auf _1x1kreis_600 oder _1x1kreis_1080.'
+                  : mode === 'resize'
+                    ? resizeMode === 'trim'
+                      ? 'Beim Beschneiden bleibt der Originalname und wird um _crop ergänzt.'
+                      : 'Beim Skalieren bleibt der Originalname und wird um _small ergänzt. Die Höhe folgt dem Seitenverhältnis.'
+                    : 'Dateinamen enden auf _9x16, _4x5 oder _1x1.'}
+              </span>
             </div>
           </footer>
         </div>
